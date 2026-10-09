@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -940,7 +939,7 @@
                         <tr>
                             <td class="sig">6</td>
                             <td class="pat"><span class="pat-tag">
-                                    < <=> >=
+                                    &lt; <=> >=
                                 </span></td>
                             <td>Relational operators</td>
                             <td>Left-to-right</td>
@@ -1028,9 +1027,9 @@
                             <td>✓ YES (& before |)</td>
                         </tr>
                         <tr>
-                            <td class="sig">a < b && c < d</td>
-                            <td class="pat">(a < b) && (c < d)</td>
-                            <td>✓ YES (< before &&)</td>
+                            <td class="sig">a &lt; b && c &lt; d</td>
+                            <td class="pat">(a &lt; b) && (c &lt; d)</td>
+                            <td>✓ YES (&lt; before &&)</td>
                         </tr>
                         <tr>
                             <td class="sig">a = b = c</td>
@@ -1048,8 +1047,8 @@
                             <td>✓ YES (unary - before *)</td>
                         </tr>
                         <tr>
-                            <td class="sig">a > b ? c : d + e</td>
-                            <td class="pat">a > b ? c : (d + e)</td>
+                            <td class="sig">a &gt; b ? c : d + e</td>
+                            <td class="pat">a &gt; b ? c : (d + e)</td>
                             <td>✓ YES (+ before ?:)</td>
                         </tr>
                     </tbody>
@@ -1069,8 +1068,8 @@
                     &nbsp;&nbsp;• <code>a == b == c</code> → <code>(a == b) == c</code> (different!)<br /><br />
 
                     <strong>Shift vs Comparison:</strong><br />
-                    &nbsp;&nbsp;• <code>a < b << c</code> → <code>a < (b << c)</code><br />
-                    &nbsp;&nbsp;• Use: <code>(a < b) << c<code>a &lt; b &lt;&lt; c</code> →
+                    &nbsp;&nbsp;• <code>a &lt; b << c</code> → <code>a &lt; (b << c)</code><br />
+                    &nbsp;&nbsp;• Use: <code>(a &lt; b) << c<code>a &lt; b &lt;&lt; c</code> →
                     <code>a &lt; (b &lt;&lt; c)</code><br />
                     &nbsp;&nbsp;• Use: <code>(a &lt; b) &lt;&lt; c</code> if needed
 
@@ -1105,7 +1104,7 @@
                         <tr>
                             <td class="sig">Mixed math & logic</td>
                             <td class="pat">Arithmetic → Relational → Logical</td>
-                            <td>a + b < c && d=((a+b) < c) && d</td>
+                            <td>a + b &lt; c && d=((a+b) &lt; c) && d</td>
                         </tr>
                         <tr>
                             <td class="sig">Assignment chain</td>
@@ -1114,7 +1113,7 @@
                         </tr>
                         <tr>
                             <td class="sig">Increment/decrement</td>
-                            <td class="pat">Post (a++) > Pre (++a) in evaluation</td>
+                            <td class="pat">Post (a++) &gt; Pre (++a) in evaluation</td>
                             <td>Post-fix in suffix position evaluated as-is</td>
                         </tr>
                     </tbody>
@@ -1314,6 +1313,95 @@ void mergeSort(vector&lt;int&gt;&amp; a, int lo, int hi) {
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Dutch National Flag, sort 0/1/2</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void sortColors(vector&lt;int&gt;&amp; a) {
+    int lo = 0, mid = 0, hi = a.size() - 1;
+    while (mid &lt;= hi) {
+        if (a[mid] == 0) swap(a[lo++], a[mid++]);
+        else if (a[mid] == 1) mid++;
+        else swap(a[mid], a[hi--]);
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Quickselect, kth smallest (0-indexed k)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int quickSelect(vector&lt;int&gt;&amp; a, int k) {
+    int lo = 0, hi = a.size() - 1;
+    while (lo &lt;= hi) {
+        swap(a[lo + rand() % (hi - lo + 1)], a[hi]);
+        int pivot = a[hi], i = lo;
+        for (int j = lo; j &lt; hi; j++) if (a[j] &lt; pivot) swap(a[i++], a[j]);
+        swap(a[i], a[hi]);
+        if (i == k) return a[i];
+        if (i &lt; k) lo = i + 1; else hi = i - 1;
+    }
+    return -1;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Counting Sort (stable)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; countingSort(vector&lt;int&gt;&amp; a, int maxVal) {
+    vector&lt;int&gt; cnt(maxVal + 1, 0), out(a.size());
+    for (int x : a) cnt[x]++;
+    for (int i = 1; i &lt;= maxVal; i++) cnt[i] += cnt[i - 1];
+    for (int i = (int)a.size() - 1; i &gt;= 0; i--) out[--cnt[a[i]]] = a[i];
+    return out;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Heap Sort</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void heapify(vector&lt;int&gt;&amp; a, int n, int i) {
+    int big = i, l = 2 * i + 1, r = 2 * i + 2;
+    if (l &lt; n &amp;&amp; a[l] &gt; a[big]) big = l;
+    if (r &lt; n &amp;&amp; a[r] &gt; a[big]) big = r;
+    if (big != i) { swap(a[i], a[big]); heapify(a, n, big); }
+}
+void heapSort(vector&lt;int&gt;&amp; a) {
+    int n = a.size();
+    for (int i = n / 2 - 1; i &gt;= 0; i--) heapify(a, n, i);
+    for (int i = n - 1; i &gt; 0; i--) { swap(a[0], a[i]); heapify(a, i, 0); }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Radix Sort (non-negative ints, LSD)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void countByDigit(vector&lt;int&gt;&amp; a, long long exp) {
+    vector&lt;int&gt; out(a.size()), cnt(10, 0);
+    for (int x : a) cnt[(x / exp) % 10]++;
+    for (int i = 1; i &lt; 10; i++) cnt[i] += cnt[i - 1];
+    for (int i = (int)a.size() - 1; i &gt;= 0; i--) out[--cnt[(a[i] / exp) % 10]] = a[i];
+    a = out;
+}
+void radixSort(vector&lt;int&gt;&amp; a) {
+    int mx = *max_element(a.begin(), a.end());
+    for (long long exp = 1; mx / exp &gt; 0; exp *= 10) countByDigit(a, exp);
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -1460,6 +1548,29 @@ void mergeSort(vector&lt;int&gt;&amp; a, int lo, int hi) {
                         </div>
                     </div>
                     <div class="example">
+                        <h4>Moore's Algorithm &mdash; majority element</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int majority(vector&lt;int&gt;&amp; nums) {
+    int n = nums.size();
+    // Moore's Algorithm
+    int count = 0, el = INT_MIN;
+    for(int nm: nums){
+      if(count == 0) count = 1, el = nm;
+      else if(nm == el) count++;
+      else count--;
+    }
+    count = 0;
+    for(int nm: nums){
+      if(nm == el) count++;
+    }
+    return (count &gt; n/2) ? el: -1;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
                         <h4>Next Permutation</h4>
 
                         <div class="code-wrap">
@@ -1527,6 +1638,245 @@ void mergeSort(vector&lt;int&gt;&amp; a, int lo, int hi) {
         }
     }
     return water;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Union / Intersection of two sorted arrays</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; sortedUnion(vector&lt;int&gt;&amp; a, vector&lt;int&gt;&amp; b) {
+    vector&lt;int&gt; res; int i = 0, j = 0;
+    while (i &lt; (int)a.size() || j &lt; (int)b.size()) {
+        int x;
+        if (j == (int)b.size() || (i &lt; (int)a.size() &amp;&amp; a[i] &lt;= b[j])) x = a[i++];
+        else x = b[j++];
+        if (res.empty() || res.back() != x) res.push_back(x);
+    }
+    return res;
+}
+vector&lt;int&gt; sortedIntersection(vector&lt;int&gt;&amp; a, vector&lt;int&gt;&amp; b) {
+    vector&lt;int&gt; res; int i = 0, j = 0;
+    while (i &lt; (int)a.size() &amp;&amp; j &lt; (int)b.size()) {
+        if (a[i] &lt; b[j]) i++;
+        else if (a[i] &gt; b[j]) j++;
+        else { if (res.empty() || res.back() != a[i]) res.push_back(a[i]); i++; j++; }
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Move Zeroes and Remove Duplicates (read/write pointer)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void moveZeroes(vector&lt;int&gt;&amp; a) {
+    int w = 0;
+    for (int r = 0; r &lt; (int)a.size(); r++)
+        if (a[r] != 0) swap(a[w++], a[r]);
+}
+int removeDuplicates(vector&lt;int&gt;&amp; a) {        // sorted array
+    if (a.empty()) return 0;
+    int w = 1;
+    for (int r = 1; r &lt; (int)a.size(); r++)
+        if (a[r] != a[w - 1]) a[w++] = a[r];
+    return w;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Rotate array by k, reversal trick</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void rotateRight(vector&lt;int&gt;&amp; a, int k) {
+    int n = a.size(); if (!n) return;
+    k %= n;
+    reverse(a.begin(), a.end());
+    reverse(a.begin(), a.begin() + k);
+    reverse(a.begin() + k, a.end());
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Leaders in an array</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; leaders(vector&lt;int&gt;&amp; a) {
+    vector&lt;int&gt; res; int mx = INT_MIN;
+    for (int i = (int)a.size() - 1; i &gt;= 0; i--)
+        if (a[i] &gt;= mx) { res.push_back(a[i]); mx = a[i]; }
+    reverse(res.begin(), res.end());
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Rearrange by sign (equal positives and negatives)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; rearrangeBySign(vector&lt;int&gt;&amp; a) {
+    vector&lt;int&gt; res(a.size());
+    int pos = 0, neg = 1;
+    for (int x : a) {
+        if (x &gt; 0) { res[pos] = x; pos += 2; }
+        else       { res[neg] = x; neg += 2; }
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Subarray Sum Equals K, prefix sum + HashMap</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int subarraySum(vector&lt;int&gt;&amp; a, int k) {
+    unordered_map&lt;long long, int&gt; freq;
+    freq[0] = 1;
+    long long prefix = 0; int count = 0;
+    for (int x : a) {
+        prefix += x;
+        if (freq.count(prefix - k)) count += freq[prefix - k];
+        freq[prefix]++;
+    }
+    return count;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Majority Element II (&gt; n/3), extended Boyer–Moore</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; majorityElementII(vector&lt;int&gt;&amp; a) {
+    int c1 = 0, c2 = 0, e1 = INT_MIN, e2 = INT_MIN;
+    for (int x : a) {
+        if (c1 == 0 &amp;&amp; x != e2) { c1 = 1; e1 = x; }
+        else if (c2 == 0 &amp;&amp; x != e1) { c2 = 1; e2 = x; }
+        else if (x == e1) c1++;
+        else if (x == e2) c2++;
+        else { c1--; c2--; }
+    }
+    c1 = c2 = 0;
+    for (int x : a) { if (x == e1) c1++; else if (x == e2) c2++; }
+    vector&lt;int&gt; res; int n = a.size();
+    if (c1 &gt; n / 3) res.push_back(e1);
+    if (c2 &gt; n / 3) res.push_back(e2);
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Merge Overlapping Intervals</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; mergeIntervals(vector&lt;vector&lt;int&gt;&gt;&amp; v) {
+    sort(v.begin(), v.end());
+    vector&lt;vector&lt;int&gt;&gt; res;
+    for (auto&amp; cur : v) {
+        if (res.empty() || res.back()[1] &lt; cur[0]) res.push_back(cur);
+        else res.back()[1] = max(res.back()[1], cur[1]);
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Merge two sorted arrays in-place, gap method</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void mergeInPlace(vector&lt;int&gt;&amp; a, vector&lt;int&gt;&amp; b) {
+    int n = a.size(), m = b.size();
+    int gap = (n + m + 1) / 2;
+    while (gap &gt; 0) {
+        int i = 0, j = gap;
+        while (j &lt; n + m) {
+            int&amp; x = i &lt; n ? a[i] : b[i - n];
+            int&amp; y = j &lt; n ? a[j] : b[j - n];
+            if (x &gt; y) swap(x, y);
+            i++; j++;
+        }
+        if (gap == 1) break;
+        gap = (gap + 1) / 2;
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Count Inversions, merge sort modification</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long mergeCount(vector&lt;int&gt;&amp; a, int lo, int mid, int hi) {
+    vector&lt;int&gt; tmp; long long inv = 0;
+    int i = lo, j = mid + 1;
+    while (i &lt;= mid &amp;&amp; j &lt;= hi) {
+        if (a[i] &lt;= a[j]) tmp.push_back(a[i++]);
+        else { tmp.push_back(a[j++]); inv += mid - i + 1; }
+    }
+    while (i &lt;= mid) tmp.push_back(a[i++]);
+    while (j &lt;= hi)  tmp.push_back(a[j++]);
+    for (int k = lo; k &lt;= hi; k++) a[k] = tmp[k - lo];
+    return inv;
+}
+long long countInversions(vector&lt;int&gt;&amp; a, int lo, int hi) {
+    if (lo &gt;= hi) return 0;
+    int mid = lo + (hi - lo) / 2;
+    return countInversions(a, lo, mid) + countInversions(a, mid + 1, hi) + mergeCount(a, lo, mid, hi);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Maximum Product Subarray</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int maxProduct(vector&lt;int&gt;&amp; a) {
+    int mx = a[0], mn = a[0], best = a[0];
+    for (int i = 1; i &lt; (int)a.size(); i++) {
+        if (a[i] &lt; 0) swap(mx, mn);
+        mx = max(a[i], mx * a[i]);
+        mn = min(a[i], mn * a[i]);
+        best = max(best, mx);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Count subarrays with XOR = K</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int subarraysWithXorK(vector&lt;int&gt;&amp; a, int k) {
+    unordered_map&lt;int, int&gt; freq;
+    freq[0] = 1;
+    int xr = 0, count = 0;
+    for (int x : a) {
+        xr ^= x;
+        count += freq[xr ^ k];
+        freq[xr]++;
+    }
+    return count;
 }</code></pre>
                         </div>
                     </div>
@@ -1847,6 +2197,395 @@ long long binarySearchAnswer(vector&lt;int&gt;&amp; arr) {
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Upper bound, first/last occurrence, count (uses lowerBound from above)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int upperBound(vector&lt;int&gt;&amp; a, int target) {      // first index with a[i] &gt; target
+    int lo = 0, hi = a.size();
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] &lt;= target) lo = mid + 1; else hi = mid;
+    }
+    return lo;
+}
+pair&lt;int,int&gt; firstLast(vector&lt;int&gt;&amp; a, int x) {
+    int lb = lowerBound(a, x), ub = upperBound(a, x);
+    if (lb == (int)a.size() || a[lb] != x) return {-1, -1};
+    return {lb, ub - 1};                          // count = ub - lb
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Search in Rotated Sorted Array II (duplicates)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool searchRotatedII(vector&lt;int&gt;&amp; a, int target) {
+    int lo = 0, hi = a.size() - 1;
+    while (lo &lt;= hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] == target) return true;
+        if (a[lo] == a[mid] &amp;&amp; a[mid] == a[hi]) { lo++; hi--; continue; }
+        if (a[lo] &lt;= a[mid]) {
+            if (a[lo] &lt;= target &amp;&amp; target &lt; a[mid]) hi = mid - 1; else lo = mid + 1;
+        } else {
+            if (a[mid] &lt; target &amp;&amp; target &lt;= a[hi]) lo = mid + 1; else hi = mid - 1;
+        }
+    }
+    return false;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Minimum in Rotated Sorted Array (index = rotation count)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int findMinIndex(vector&lt;int&gt;&amp; a) {
+    int lo = 0, hi = a.size() - 1;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] &gt; a[hi]) lo = mid + 1; else hi = mid;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Peak Element</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int findPeak(vector&lt;int&gt;&amp; a) {
+    int lo = 0, hi = a.size() - 1;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] &lt; a[mid + 1]) lo = mid + 1; else hi = mid;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Single Element in Sorted Array (others twice), index parity</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int singleNonDuplicate(vector&lt;int&gt;&amp; a) {
+    int lo = 0, hi = a.size() - 1;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (mid % 2) mid--;                     // keep mid even
+        if (a[mid] == a[mid + 1]) lo = mid + 2; else hi = mid;
+    }
+    return a[lo];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sqrt(x)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int mySqrt(int x) {
+    long long lo = 0, hi = x, ans = 0;
+    while (lo &lt;= hi) {
+        long long mid = lo + (hi - lo) / 2;
+        if (mid * mid &lt;= x) { ans = mid; lo = mid + 1; } else hi = mid - 1;
+    }
+    return ans;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Koko Eating Bananas, minimize speed</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int minEatingSpeed(vector&lt;int&gt;&amp; piles, int h) {
+    int lo = 1, hi = *max_element(piles.begin(), piles.end());
+    auto hours = [&amp;](int speed) { long long t = 0; for (int p : piles) t += (p + speed - 1) / speed; return t; };
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (hours(mid) &lt;= h) hi = mid; else lo = mid + 1;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Ship Packages in D Days (also Allocate Books / Painter's Partition, same code: w = pages,
+                            days =
+                            students)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int shipWithinDays(vector&lt;int&gt;&amp; w, int days) {
+    int lo = *max_element(w.begin(), w.end()), hi = accumulate(w.begin(), w.end(), 0);
+    auto daysNeeded = [&amp;](int cap) {
+        int d = 1, load = 0;
+        for (int x : w) { if (load + x &gt; cap) { d++; load = 0; } load += x; }
+        return d;
+    };
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (daysNeeded(mid) &lt;= days) hi = mid; else lo = mid + 1;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Aggressive Cows, maximize the minimum distance</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int aggressiveCows(vector&lt;int&gt;&amp; stalls, int cows) {
+    sort(stalls.begin(), stalls.end());
+    int lo = 1, hi = stalls.back() - stalls[0], ans = 0;
+    auto can = [&amp;](int dist) {
+        int placed = 1, last = stalls[0];
+        for (int i = 1; i &lt; (int)stalls.size(); i++)
+            if (stalls[i] - last &gt;= dist) { placed++; last = stalls[i]; }
+        return placed &gt;= cows;
+    };
+    while (lo &lt;= hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (can(mid)) { ans = mid; lo = mid + 1; } else hi = mid - 1;
+    }
+    return ans;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Minimum Days to Make M Bouquets</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int minDays(vector&lt;int&gt;&amp; bloom, int m, int k) {
+    if ((long long)m * k &gt; (long long)bloom.size()) return -1;
+    int lo = *min_element(bloom.begin(), bloom.end()), hi = *max_element(bloom.begin(), bloom.end());
+    auto can = [&amp;](int day) {
+        int bouquets = 0, run = 0;
+        for (int b : bloom) {
+            if (b &lt;= day) { if (++run == k) { bouquets++; run = 0; } }
+            else run = 0;
+        }
+        return bouquets &gt;= m;
+    };
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (can(mid)) hi = mid; else lo = mid + 1;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Smallest Divisor given a Threshold</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int smallestDivisor(vector&lt;int&gt;&amp; a, int threshold) {
+    int lo = 1, hi = *max_element(a.begin(), a.end());
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        long long sum = 0;
+        for (int x : a) sum += (x + mid - 1) / mid;
+        if (sum &lt;= threshold) hi = mid; else lo = mid + 1;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Kth Missing Positive Number</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int findKthPositive(vector&lt;int&gt;&amp; a, int k) {
+    int lo = 0, hi = a.size();
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] - (mid + 1) &lt; k) lo = mid + 1;   // missing numbers before a[mid]
+        else hi = mid;
+    }
+    return lo + k;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Minimize Max Distance to Gas Station (real-valued BS)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">double minMaxGasDist(vector&lt;int&gt;&amp; st, int K) {
+    double lo = 0, hi = 0;
+    for (int i = 1; i &lt; (int)st.size(); i++) hi = max(hi, (double)(st[i] - st[i - 1]));
+    while (hi - lo &gt; 1e-6) {
+        double mid = (lo + hi) / 2;
+        int need = 0;
+        for (int i = 1; i &lt; (int)st.size(); i++) need += (int)((st[i] - st[i - 1]) / mid);
+        if (need &lt;= K) hi = mid; else lo = mid;
+    }
+    return hi;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Matrix sorted like a flattened array (row = mid / C, col = mid % C)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool searchMatrix1D(vector&lt;vector&lt;int&gt;&gt;&amp; m, int target) {
+    int R = m.size(), C = m[0].size(), lo = 0, hi = R * C - 1;
+    while (lo &lt;= hi) {
+        int mid = lo + (hi - lo) / 2, val = m[mid / C][mid % C];
+        if (val == target) return true;
+        if (val &lt; target) lo = mid + 1; else hi = mid - 1;
+    }
+    return false;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Row with Maximum 1's (rows sorted)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int rowWithMax1s(vector&lt;vector&lt;int&gt;&gt;&amp; m) {
+    int best = -1, maxOnes = 0;
+    for (int r = 0; r &lt; (int)m.size(); r++) {
+        int ones = m[r].end() - lower_bound(m[r].begin(), m[r].end(), 1);
+        if (ones &gt; maxOnes) { maxOnes = ones; best = r; }
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Kth Smallest in a Sorted Matrix, BS on value</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int kthSmallestMatrix(vector&lt;vector&lt;int&gt;&gt;&amp; m, int k) {
+    int n = m.size(), lo = m[0][0], hi = m[n - 1][n - 1];
+    auto countLE = [&amp;](int x) {
+        int cnt = 0, col = n - 1;
+        for (int r = 0; r &lt; n; r++) {
+            while (col &gt;= 0 &amp;&amp; m[r][col] &gt; x) col--;
+            cnt += col + 1;
+        }
+        return cnt;
+    };
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (countLE(mid) &gt;= k) hi = mid; else lo = mid + 1;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Matrix Median (odd R*C, rows sorted)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int matrixMedian(vector&lt;vector&lt;int&gt;&gt;&amp; m) {
+    int R = m.size(), C = m[0].size(), lo = INT_MAX, hi = INT_MIN;
+    for (auto&amp; row : m) { lo = min(lo, row[0]); hi = max(hi, row[C - 1]); }
+    int need = (R * C + 1) / 2;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2, cnt = 0;
+        for (auto&amp; row : m) cnt += upper_bound(row.begin(), row.end(), mid) - row.begin();
+        if (cnt &lt; need) lo = mid + 1; else hi = mid;
+    }
+    return lo;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Peak Element in 2D (values ≥ 0)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; findPeak2D(vector&lt;vector&lt;int&gt;&gt;&amp; m) {
+    int R = m.size(), C = m[0].size(), lo = 0, hi = C - 1;
+    while (lo &lt;= hi) {
+        int mc = lo + (hi - lo) / 2, mr = 0;
+        for (int r = 1; r &lt; R; r++) if (m[r][mc] &gt; m[mr][mc]) mr = r;
+        int left  = mc &gt; 0     ? m[mr][mc - 1] : -1;
+        int right = mc &lt; C - 1 ? m[mr][mc + 1] : -1;
+        if (m[mr][mc] &gt; left &amp;&amp; m[mr][mc] &gt; right) return {mr, mc};
+        if (left &gt; m[mr][mc]) hi = mc - 1; else lo = mc + 1;
+    }
+    return {-1, -1};
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Median of Two Sorted Arrays, partition BS</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">double findMedianSortedArrays(vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B) {
+    if (A.size() &gt; B.size()) return findMedianSortedArrays(B, A);
+    int n = A.size(), m = B.size(), lo = 0, hi = n, half = (n + m + 1) / 2;
+    while (lo &lt;= hi) {
+        int i = lo + (hi - lo) / 2, j = half - i;
+        int l1 = i &gt; 0 ? A[i - 1] : INT_MIN, r1 = i &lt; n ? A[i] : INT_MAX;
+        int l2 = j &gt; 0 ? B[j - 1] : INT_MIN, r2 = j &lt; m ? B[j] : INT_MAX;
+        if (l1 &lt;= r2 &amp;&amp; l2 &lt;= r1) {
+            if ((n + m) % 2) return max(l1, l2);
+            return (max(l1, l2) + min(r1, r2)) / 2.0;
+        }
+        if (l1 &gt; r2) hi = i - 1; else lo = i + 1;
+    }
+    return 0.0;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Kth Element of Two Sorted Arrays</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int kthOfTwo(vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B, int k) {
+    if (A.size() &gt; B.size()) return kthOfTwo(B, A, k);
+    int n = A.size(), m = B.size(), lo = max(0, k - m), hi = min(k, n);
+    while (lo &lt;= hi) {
+        int i = lo + (hi - lo) / 2, j = k - i;
+        int l1 = i &gt; 0 ? A[i - 1] : INT_MIN, r1 = i &lt; n ? A[i] : INT_MAX;
+        int l2 = j &gt; 0 ? B[j - 1] : INT_MIN, r2 = j &lt; m ? B[j] : INT_MAX;
+        if (l1 &lt;= r2 &amp;&amp; l2 &lt;= r1) return max(l1, l2);
+        if (l1 &gt; r2) hi = i - 1; else lo = i + 1;
+    }
+    return -1;
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
 
             </section>
@@ -2020,6 +2759,202 @@ string modifySentences(string s) {
         }
     }
     return s;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Check Anagram (frequency array)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isAnagram(const string&amp; a, const string&amp; b) {
+    if (a.size() != b.size()) return false;
+    int freq[256] = {};
+    for (unsigned char c : a) freq[c]++;
+    for (unsigned char c : b) if (--freq[c] &lt; 0) return false;
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Group Anagrams</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;string&gt;&gt; groupAnagrams(vector&lt;string&gt;&amp; strs) {
+    unordered_map&lt;string, vector&lt;string&gt;&gt; mp;
+    for (auto&amp; s : strs) { string key = s; sort(key.begin(), key.end()); mp[key].push_back(s); }
+    vector&lt;vector&lt;string&gt;&gt; res;
+    for (auto&amp; [k, v] : mp) res.push_back(v);
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Longest Common Prefix (sort, compare first and last)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string longestCommonPrefix(vector&lt;string&gt;&amp; v) {
+    sort(v.begin(), v.end());
+    string &amp;a = v.front(), &amp;b = v.back();
+    int i = 0;
+    while (i &lt; (int)min(a.size(), b.size()) &amp;&amp; a[i] == b[i]) i++;
+    return a.substr(0, i);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Valid Palindrome (ignore case / punctuation)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isPalindromeStr(const string&amp; s) {
+    int l = 0, r = (int)s.size() - 1;
+    while (l &lt; r) {
+        while (l &lt; r &amp;&amp; !isalnum(s[l])) l++;
+        while (l &lt; r &amp;&amp; !isalnum(s[r])) r--;
+        if (tolower(s[l++]) != tolower(s[r--])) return false;
+    }
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Reverse Words in a Sentence (language bridge, C++ version)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string reverseWords(const string&amp; s) {
+    stringstream ss(s); string w; vector&lt;string&gt; words;
+    while (ss &gt;&gt; w) words.push_back(w);
+    reverse(words.begin(), words.end());
+    string res;
+    for (int i = 0; i &lt; (int)words.size(); i++) { if (i) res += ' '; res += words[i]; }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Roman to Integer</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int romanToInt(const string&amp; s) {
+    unordered_map&lt;char,int&gt; val = {{'I',1},{'V',5},{'X',10},{'L',50},{'C',100},{'D',500},{'M',1000}};
+    int total = 0;
+    for (int i = (int)s.size() - 1; i &gt;= 0; i--) {
+        if (i + 1 &lt; (int)s.size() &amp;&amp; val[s[i]] &lt; val[s[i + 1]]) total -= val[s[i]];
+        else total += val[s[i]];
+    }
+    return total;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>String Compression (in-place read/write heads)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int compress(vector&lt;char&gt;&amp; chars) {
+    int w = 0, i = 0, n = chars.size();
+    while (i &lt; n) {
+        int j = i;
+        while (j &lt; n &amp;&amp; chars[j] == chars[i]) j++;
+        chars[w++] = chars[i];
+        if (j - i &gt; 1) for (char c : to_string(j - i)) chars[w++] = c;
+        i = j;
+    }
+    return w;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Word Break, DP + HashSet</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool wordBreak(string s, vector&lt;string&gt;&amp; dict) {
+    unordered_set&lt;string&gt; st(dict.begin(), dict.end());
+    int n = s.size();
+    vector&lt;bool&gt; dp(n + 1, false); dp[0] = true;
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 0; j &lt; i; j++)
+            if (dp[j] &amp;&amp; st.count(s.substr(j, i - j))) { dp[i] = true; break; }
+    return dp[n];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Min Insertions to Make Palindrome (LCS with reverse)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int minInsertions(string s) {
+    string r(s.rbegin(), s.rend());
+    int n = s.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n + 1, vector&lt;int&gt;(n + 1, 0));
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 1; j &lt;= n; j++)
+            dp[i][j] = s[i - 1] == r[j - 1] ? 1 + dp[i - 1][j - 1] : max(dp[i - 1][j], dp[i][j - 1]);
+    return n - dp[n][n];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Suffix Array + Kasai LCP, distinct substrings / longest repeating substring</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; buildSA(const string&amp; s) {
+    int n = s.size();
+    vector&lt;int&gt; sa(n), rnk(n), tmp(n);
+    iota(sa.begin(), sa.end(), 0);
+    for (int i = 0; i &lt; n; i++) rnk[i] = s[i];
+    for (int k = 1; ; k &lt;&lt;= 1) {
+        auto cmp = [&amp;](int a, int b) {
+            if (rnk[a] != rnk[b]) return rnk[a] &lt; rnk[b];
+            int ra = a + k &lt; n ? rnk[a + k] : -1, rb = b + k &lt; n ? rnk[b + k] : -1;
+            return ra &lt; rb;
+        };
+        sort(sa.begin(), sa.end(), cmp);
+        tmp[sa[0]] = 0;
+        for (int i = 1; i &lt; n; i++) tmp[sa[i]] = tmp[sa[i - 1]] + cmp(sa[i - 1], sa[i]);
+        rnk = tmp;
+        if (rnk[sa[n - 1]] == n - 1) break;
+    }
+    return sa;
+}
+vector&lt;int&gt; buildLCP(const string&amp; s, vector&lt;int&gt;&amp; sa) {   // Kasai
+    int n = s.size();
+    vector&lt;int&gt; rnk(n), lcp(n, 0);
+    for (int i = 0; i &lt; n; i++) rnk[sa[i]] = i;
+    for (int i = 0, h = 0; i &lt; n; i++) {
+        if (rnk[i] == 0) { h = 0; continue; }
+        int j = sa[rnk[i] - 1];
+        while (i + h &lt; n &amp;&amp; j + h &lt; n &amp;&amp; s[i + h] == s[j + h]) h++;
+        lcp[rnk[i]] = h;
+        if (h) h--;
+    }
+    return lcp;
+}
+long long countDistinctSubstrings(const string&amp; s) {
+    int n = s.size();
+    auto sa = buildSA(s);
+    auto lcp = buildLCP(s, sa);
+    long long total = (long long)n * (n + 1) / 2;
+    for (int x : lcp) total -= x;        // longest repeating substring = *max_element(lcp)
+    return total;
 }</code></pre>
                         </div>
                     </div>
@@ -2362,6 +3297,212 @@ public:
 };</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Middle of the list</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* middleNode(ListNode* head) {
+    ListNode *slow = head, *fast = head;
+    while (fast &amp;&amp; fast-&gt;next) { slow = slow-&gt;next; fast = fast-&gt;next-&gt;next; }
+    return slow;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Remove Nth Node from End</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* removeNthFromEnd(ListNode* head, int n) {
+    ListNode dummy(0); dummy.next = head;
+    ListNode *fast = &amp;dummy, *slow = &amp;dummy;
+    for (int i = 0; i &lt; n; i++) fast = fast-&gt;next;
+    while (fast-&gt;next) { fast = fast-&gt;next; slow = slow-&gt;next; }
+    ListNode* del = slow-&gt;next;
+    slow-&gt;next = del-&gt;next;
+    delete del;
+    return dummy.next;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Palindrome Linked List</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isPalindromeList(ListNode* head) {
+    ListNode *slow = head, *fast = head;
+    while (fast &amp;&amp; fast-&gt;next) { slow = slow-&gt;next; fast = fast-&gt;next-&gt;next; }
+    ListNode* prev = nullptr;                       // reverse second half
+    while (slow) { ListNode* nxt = slow-&gt;next; slow-&gt;next = prev; prev = slow; slow = nxt; }
+    for (ListNode *a = head, *b = prev; b; a = a-&gt;next, b = b-&gt;next)
+        if (a-&gt;val != b-&gt;val) return false;
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Add Two Numbers</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    ListNode dummy(0), *tail = &amp;dummy;
+    int carry = 0;
+    while (l1 || l2 || carry) {
+        int sum = carry;
+        if (l1) { sum += l1-&gt;val; l1 = l1-&gt;next; }
+        if (l2) { sum += l2-&gt;val; l2 = l2-&gt;next; }
+        tail-&gt;next = new ListNode(sum % 10);
+        tail = tail-&gt;next;
+        carry = sum / 10;
+    }
+    return dummy.next;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Intersection Point of Two Lists</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* getIntersection(ListNode* a, ListNode* b) {
+    ListNode *p = a, *q = b;
+    while (p != q) { p = p ? p-&gt;next : b; q = q ? q-&gt;next : a; }
+    return p;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sort List (merge sort, reuses mergeTwoLists)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* sortList(ListNode* head) {
+    if (!head || !head-&gt;next) return head;
+    ListNode *slow = head, *fast = head-&gt;next;
+    while (fast &amp;&amp; fast-&gt;next) { slow = slow-&gt;next; fast = fast-&gt;next-&gt;next; }
+    ListNode* second = slow-&gt;next;
+    slow-&gt;next = nullptr;
+    return mergeTwoLists(sortList(head), sortList(second));
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Reverse Nodes in K-Group</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* reverseKGroup(ListNode* head, int k) {
+    ListNode* node = head;
+    for (int i = 0; i &lt; k; i++) { if (!node) return head; node = node-&gt;next; }
+    ListNode *prev = nullptr, *curr = head;
+    for (int i = 0; i &lt; k; i++) { ListNode* nxt = curr-&gt;next; curr-&gt;next = prev; prev = curr; curr = nxt; }
+    head-&gt;next = reverseKGroup(curr, k);
+    return prev;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Clone List with Random Pointer (interweaving trick, O(1) space)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct RNode { int val; RNode *next, *random; RNode(int x) : val(x), next(nullptr), random(nullptr) {} };
+
+RNode* copyRandomList(RNode* head) {
+    if (!head) return nullptr;
+    for (RNode* c = head; c; c = c-&gt;next-&gt;next) {          // 1. interleave copies
+        RNode* cp = new RNode(c-&gt;val);
+        cp-&gt;next = c-&gt;next; c-&gt;next = cp;
+    }
+    for (RNode* c = head; c; c = c-&gt;next-&gt;next)            // 2. wire random pointers
+        if (c-&gt;random) c-&gt;next-&gt;random = c-&gt;random-&gt;next;
+    RNode* newHead = head-&gt;next;
+    for (RNode* c = head; c; c = c-&gt;next) {                // 3. split the lists
+        RNode* cp = c-&gt;next;
+        c-&gt;next = cp-&gt;next;
+        if (cp-&gt;next) cp-&gt;next = cp-&gt;next-&gt;next;
+    }
+    return newHead;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Rotate List by K (make circular, break)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">ListNode* rotateRight(ListNode* head, int k) {
+    if (!head || !head-&gt;next || k == 0) return head;
+    int len = 1; ListNode* tail = head;
+    while (tail-&gt;next) { tail = tail-&gt;next; len++; }
+    k %= len;
+    if (k == 0) return head;
+    tail-&gt;next = head;
+    ListNode* newTail = head;
+    for (int i = 0; i &lt; len - k - 1; i++) newTail = newTail-&gt;next;
+    ListNode* newHead = newTail-&gt;next;
+    newTail-&gt;next = nullptr;
+    return newHead;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Reorder List (L0 → Ln → L1 → Ln−1 …)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void reorderList(ListNode* head) {
+    if (!head || !head-&gt;next) return;
+    ListNode *slow = head, *fast = head;
+    while (fast-&gt;next &amp;&amp; fast-&gt;next-&gt;next) { slow = slow-&gt;next; fast = fast-&gt;next-&gt;next; }
+    ListNode *prev = nullptr, *curr = slow-&gt;next;
+    slow-&gt;next = nullptr;
+    while (curr) { ListNode* nxt = curr-&gt;next; curr-&gt;next = prev; prev = curr; curr = nxt; }
+    ListNode *a = head, *b = prev;
+    while (b) {
+        ListNode *an = a-&gt;next, *bn = b-&gt;next;
+        a-&gt;next = b; b-&gt;next = an;
+        a = an; b = bn;
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Flatten a Multilevel (bottom-pointer) List</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct FNode { int data; FNode *next, *bottom; };
+
+FNode* mergeBottom(FNode* a, FNode* b) {
+    if (!a) return b;
+    if (!b) return a;
+    FNode* res;
+    if (a-&gt;data &lt; b-&gt;data) { res = a; res-&gt;bottom = mergeBottom(a-&gt;bottom, b); }
+    else                   { res = b; res-&gt;bottom = mergeBottom(a, b-&gt;bottom); }
+    res-&gt;next = nullptr;
+    return res;
+}
+FNode* flattenList(FNode* head) {
+    if (!head || !head-&gt;next) return head;
+    return mergeBottom(head, flattenList(head-&gt;next));
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -2485,6 +3626,175 @@ void solve(int row, int n, vector&lt;string&gt;&amp; board, vector&lt;vector&lt;
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Subsets II (duplicates)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void genSubsets(vector&lt;int&gt;&amp; a, int start, vector&lt;int&gt;&amp; cur, vector&lt;vector&lt;int&gt;&gt;&amp; res) {
+    res.push_back(cur);
+    for (int i = start; i &lt; (int)a.size(); i++) {
+        if (i &gt; start &amp;&amp; a[i] == a[i - 1]) continue;
+        cur.push_back(a[i]);
+        genSubsets(a, i + 1, cur, res);
+        cur.pop_back();
+    }
+}
+vector&lt;vector&lt;int&gt;&gt; subsetsWithDup(vector&lt;int&gt;&amp; a) {
+    sort(a.begin(), a.end());
+    vector&lt;vector&lt;int&gt;&gt; res; vector&lt;int&gt; cur;
+    genSubsets(a, 0, cur, res);
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Combination Sum (reuse allowed)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void combo(vector&lt;int&gt;&amp; a, int i, int target, vector&lt;int&gt;&amp; cur, vector&lt;vector&lt;int&gt;&gt;&amp; res) {
+    if (target == 0) { res.push_back(cur); return; }
+    if (i == (int)a.size() || target &lt; 0) return;
+    cur.push_back(a[i]);
+    combo(a, i, target - a[i], cur, res);      // pick, stay at i
+    cur.pop_back();
+    combo(a, i + 1, target, cur, res);         // not pick
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Combination Sum II (no reuse, duplicates), sort first</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void combo2(vector&lt;int&gt;&amp; a, int start, int target, vector&lt;int&gt;&amp; cur, vector&lt;vector&lt;int&gt;&gt;&amp; res) {
+    if (target == 0) { res.push_back(cur); return; }
+    for (int i = start; i &lt; (int)a.size(); i++) {
+        if (i &gt; start &amp;&amp; a[i] == a[i - 1]) continue;
+        if (a[i] &gt; target) break;
+        cur.push_back(a[i]);
+        combo2(a, i + 1, target - a[i], cur, res);
+        cur.pop_back();
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Permutations, visited[] (II version: sort + the extra skip line)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void permute(vector&lt;int&gt;&amp; a, vector&lt;bool&gt;&amp; used, vector&lt;int&gt;&amp; cur, vector&lt;vector&lt;int&gt;&gt;&amp; res) {
+    if (cur.size() == a.size()) { res.push_back(cur); return; }
+    for (int i = 0; i &lt; (int)a.size(); i++) {
+        if (used[i]) continue;
+        // Permutations II (a sorted): if (i &gt; 0 &amp;&amp; a[i] == a[i-1] &amp;&amp; !used[i-1]) continue;
+        used[i] = true; cur.push_back(a[i]);
+        permute(a, used, cur, res);
+        cur.pop_back(); used[i] = false;
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Palindrome Partitioning</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isPal(const string&amp; s, int l, int r) { while (l &lt; r) if (s[l++] != s[r--]) return false; return true; }
+
+void palPartition(const string&amp; s, int start, vector&lt;string&gt;&amp; cur, vector&lt;vector&lt;string&gt;&gt;&amp; res) {
+    if (start == (int)s.size()) { res.push_back(cur); return; }
+    for (int end = start; end &lt; (int)s.size(); end++) {
+        if (!isPal(s, start, end)) continue;
+        cur.push_back(s.substr(start, end - start + 1));
+        palPartition(s, end + 1, cur, res);
+        cur.pop_back();
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Word Search in a Grid</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool wordDfs(vector&lt;vector&lt;char&gt;&gt;&amp; b, const string&amp; w, int i, int j, int k) {
+    if (k == (int)w.size()) return true;
+    if (i &lt; 0 || j &lt; 0 || i &gt;= (int)b.size() || j &gt;= (int)b[0].size() || b[i][j] != w[k]) return false;
+    char tmp = b[i][j];
+    b[i][j] = '#';
+    bool found = wordDfs(b, w, i + 1, j, k + 1) || wordDfs(b, w, i - 1, j, k + 1)
+              || wordDfs(b, w, i, j + 1, k + 1) || wordDfs(b, w, i, j - 1, k + 1);
+    b[i][j] = tmp;
+    return found;
+}
+bool exist(vector&lt;vector&lt;char&gt;&gt;&amp; b, string w) {
+    for (int i = 0; i &lt; (int)b.size(); i++)
+        for (int j = 0; j &lt; (int)b[0].size(); j++)
+            if (wordDfs(b, w, i, j, 0)) return true;
+    return false;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sudoku Solver</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool canPlace(vector&lt;vector&lt;char&gt;&gt;&amp; b, int r, int c, char ch) {
+    for (int i = 0; i &lt; 9; i++) {
+        if (b[r][i] == ch || b[i][c] == ch) return false;
+        if (b[3 * (r / 3) + i / 3][3 * (c / 3) + i % 3] == ch) return false;
+    }
+    return true;
+}
+bool solveSudoku(vector&lt;vector&lt;char&gt;&gt;&amp; b) {
+    for (int r = 0; r &lt; 9; r++)
+        for (int c = 0; c &lt; 9; c++) {
+            if (b[r][c] != '.') continue;
+            for (char ch = '1'; ch &lt;= '9'; ch++) {
+                if (!canPlace(b, r, c, ch)) continue;
+                b[r][c] = ch;
+                if (solveSudoku(b)) return true;
+                b[r][c] = '.';
+            }
+            return false;
+        }
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Kth Permutation Sequence (factorial number system)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string getPermutation(int n, int k) {
+    vector&lt;int&gt; fact(n, 1);
+    for (int i = 1; i &lt; n; i++) fact[i] = fact[i - 1] * i;
+    string digits, res;
+    for (int i = 1; i &lt;= n; i++) digits += char('0' + i);
+    k--;
+    for (int i = n - 1; i &gt;= 0; i--) {
+        int idx = k / fact[i];
+        res += digits[idx];
+        digits.erase(digits.begin() + idx);
+        k %= fact[i];
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -2583,6 +3893,97 @@ bool isPowerOfTwo(int n)    { return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) == 0;
         count++;
     }
     return count;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Single Number III (two unique numbers)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; singleNumberIII(vector&lt;int&gt;&amp; a) {
+    long long xr = 0;
+    for (int x : a) xr ^= x;
+    long long diff = xr &amp; -xr;                   // a bit where the two answers differ
+    int p = 0, q = 0;
+    for (int x : a) { if (x &amp; diff) p ^= x; else q ^= x; }
+    return {p, q};
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Single Number II (others appear 3 times), bit counting mod 3</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int singleNumberII(vector&lt;int&gt;&amp; a) {
+    unsigned ans = 0;
+    for (int bit = 0; bit &lt; 32; bit++) {
+        int cnt = 0;
+        for (int x : a) cnt += (x &gt;&gt; bit) &amp; 1;
+        if (cnt % 3) ans |= (1u &lt;&lt; bit);
+    }
+    return (int)ans;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Count Bits from 0 to n (DP)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; countBits(int n) {
+    vector&lt;int&gt; bits(n + 1, 0);
+    for (int i = 1; i &lt;= n; i++) bits[i] = bits[i &gt;&gt; 1] + (i &amp; 1);
+    return bits;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Power Set via Bitmask</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; powerSet(vector&lt;int&gt;&amp; a) {
+    int n = a.size();
+    vector&lt;vector&lt;int&gt;&gt; res;
+    for (int mask = 0; mask &lt; (1 &lt;&lt; n); mask++) {
+        vector&lt;int&gt; subset;
+        for (int i = 0; i &lt; n; i++) if (mask &amp; (1 &lt;&lt; i)) subset.push_back(a[i]);
+        res.push_back(subset);
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Minimum Bit Flips A → B</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int minBitFlips(int a, int b) { return __builtin_popcount(a ^ b); }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Divide Two Integers without * or /</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int divideInts(int dividend, int divisor) {
+    if (dividend == INT_MIN &amp;&amp; divisor == -1) return INT_MAX;
+    long long a = llabs((long long)dividend), b = llabs((long long)divisor), q = 0;
+    while (a &gt;= b) {
+        long long t = b, shift = 1;
+        while (a &gt;= (t &lt;&lt; 1)) { t &lt;&lt;= 1; shift &lt;&lt;= 1; }
+        a -= t; q += shift;
+    }
+    return ((dividend &lt; 0) ^ (divisor &lt; 0)) ? -q : q;
 }</code></pre>
                         </div>
                     </div>
@@ -2797,6 +4198,251 @@ public:
 };</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Postfix Evaluation</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int evalPostfix(const vector&lt;string&gt;&amp; tokens) {
+    stack&lt;int&gt; st;
+    for (auto&amp; t : tokens) {
+        if (t == "+" || t == "-" || t == "*" || t == "/") {
+            int b = st.top(); st.pop();
+            int a = st.top(); st.pop();
+            if (t == "+") st.push(a + b);
+            else if (t == "-") st.push(a - b);
+            else if (t == "*") st.push(a * b);
+            else st.push(a / b);
+        } else st.push(stoi(t));
+    }
+    return st.top();
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Infix → Prefix (reverse, swap brackets, postfix with &gt;, reverse; uses precedence() from
+                            above)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string infixToPrefix(string s) {
+    reverse(s.begin(), s.end());
+    for (char&amp; c : s) { if (c == '(') c = ')'; else if (c == ')') c = '('; }
+    stack&lt;char&gt; st; string res;
+    for (char c : s) {
+        if (isalnum(c)) res += c;
+        else if (c == '(') st.push(c);
+        else if (c == ')') {
+            while (!st.empty() &amp;&amp; st.top() != '(') { res += st.top(); st.pop(); }
+            st.pop();
+        } else {
+            while (!st.empty() &amp;&amp; precedence(st.top()) &gt; precedence(c)) { res += st.top(); st.pop(); }  // '&gt;' not '&gt;='
+            st.push(c);
+        }
+    }
+    while (!st.empty()) { res += st.top(); st.pop(); }
+    reverse(res.begin(), res.end());
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Valid Parentheses</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isValid(const string&amp; s) {
+    stack&lt;char&gt; st;
+    for (char c : s) {
+        if (c == '(' || c == '{' || c == '[') st.push(c);
+        else {
+            if (st.empty()) return false;
+            char t = st.top(); st.pop();
+            if ((c == ')' &amp;&amp; t != '(') || (c == '}' &amp;&amp; t != '{') || (c == ']' &amp;&amp; t != '[')) return false;
+        }
+    }
+    return st.empty();
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Next Smaller Element (previous smaller = same, left → right)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; nextSmaller(vector&lt;int&gt;&amp; a) {
+    int n = a.size();
+    vector&lt;int&gt; res(n, -1); stack&lt;int&gt; st;
+    for (int i = n - 1; i &gt;= 0; i--) {
+        while (!st.empty() &amp;&amp; a[st.top()] &gt;= a[i]) st.pop();
+        if (!st.empty()) res[i] = a[st.top()];
+        st.push(i);
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Largest Rectangle in Histogram</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int largestRectangle(vector&lt;int&gt;&amp; h) {
+    stack&lt;int&gt; st; int best = 0, n = h.size();
+    for (int i = 0; i &lt;= n; i++) {
+        int cur = (i == n) ? 0 : h[i];
+        while (!st.empty() &amp;&amp; h[st.top()] &gt;= cur) {
+            int height = h[st.top()]; st.pop();
+            int left = st.empty() ? -1 : st.top();
+            best = max(best, height * (i - left - 1));
+        }
+        st.push(i);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Maximal Rectangle in a Binary Matrix</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int maximalRectangle(vector&lt;vector&lt;char&gt;&gt;&amp; m) {
+    if (m.empty()) return 0;
+    int C = m[0].size(), best = 0;
+    vector&lt;int&gt; h(C, 0);
+    for (auto&amp; row : m) {
+        for (int j = 0; j &lt; C; j++) h[j] = row[j] == '1' ? h[j] + 1 : 0;
+        best = max(best, largestRectangle(h));
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Stock Span</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; stockSpan(vector&lt;int&gt;&amp; price) {
+    stack&lt;int&gt; st; vector&lt;int&gt; span(price.size());
+    for (int i = 0; i &lt; (int)price.size(); i++) {
+        while (!st.empty() &amp;&amp; price[st.top()] &lt;= price[i]) st.pop();
+        span[i] = st.empty() ? i + 1 : i - st.top();
+        st.push(i);
+    }
+    return span;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Remove K Digits</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string removeKdigits(string num, int k) {
+    string st;
+    for (char c : num) {
+        while (k &amp;&amp; !st.empty() &amp;&amp; st.back() &gt; c) { st.pop_back(); k--; }
+        st.push_back(c);
+    }
+    while (k-- &gt; 0 &amp;&amp; !st.empty()) st.pop_back();
+    int i = 0;
+    while (i &lt; (int)st.size() &amp;&amp; st[i] == '0') i++;
+    st = st.substr(i);
+    return st.empty() ? "0" : st;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sum of Subarray Minimums (contribution technique)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int sumSubarrayMins(vector&lt;int&gt;&amp; a) {
+    int n = a.size(); const int MOD = 1e9 + 7;
+    vector&lt;int&gt; left(n), right(n); stack&lt;int&gt; st;
+    for (int i = 0; i &lt; n; i++) {                       // previous strictly smaller
+        while (!st.empty() &amp;&amp; a[st.top()] &gt;= a[i]) st.pop();
+        left[i] = st.empty() ? i + 1 : i - st.top();
+        st.push(i);
+    }
+    while (!st.empty()) st.pop();
+    for (int i = n - 1; i &gt;= 0; i--) {                  // next smaller or equal
+        while (!st.empty() &amp;&amp; a[st.top()] &gt; a[i]) st.pop();
+        right[i] = st.empty() ? n - i : st.top() - i;
+        st.push(i);
+    }
+    long long ans = 0;
+    for (int i = 0; i &lt; n; i++) ans = (ans + (long long)a[i] * left[i] % MOD * right[i]) % MOD;
+    return ans;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Queue using two Stacks</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">class MyQueue {
+    stack&lt;int&gt; in, out;
+    void shift() { if (out.empty()) while (!in.empty()) { out.push(in.top()); in.pop(); } }
+public:
+    void push(int x) { in.push(x); }
+    int pop()  { shift(); int v = out.top(); out.pop(); return v; }
+    int peek() { shift(); return out.top(); }
+    bool empty() { return in.empty() &amp;&amp; out.empty(); }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Stack using one Queue</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">class MyStack {
+    queue&lt;int&gt; q;
+public:
+    void push(int x) {
+        q.push(x);
+        for (int i = 0; i &lt; (int)q.size() - 1; i++) { q.push(q.front()); q.pop(); }
+    }
+    int pop() { int v = q.front(); q.pop(); return v; }
+    int top() { return q.front(); }
+    bool empty() { return q.empty(); }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Circular Queue (modulo indexing)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">class CircularQueue {
+    vector&lt;int&gt; buf; int head = 0, cnt = 0, cap;
+public:
+    CircularQueue(int k) : buf(k), cap(k) {}
+    bool enQueue(int x) { if (cnt == cap) return false; buf[(head + cnt) % cap] = x; cnt++; return true; }
+    bool deQueue() { if (!cnt) return false; head = (head + 1) % cap; cnt--; return true; }
+    int Front() { return cnt ? buf[head] : -1; }
+    int Rear()  { return cnt ? buf[(head + cnt - 1) % cap] : -1; }
+    bool isEmpty() { return cnt == 0; }
+    bool isFull()  { return cnt == cap; }
+};</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -2951,6 +4597,168 @@ public:
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Fixed window, max sum of size K</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long maxSumK(vector&lt;int&gt;&amp; a, int k) {
+    long long sum = 0, best = LLONG_MIN;
+    for (int i = 0; i &lt; (int)a.size(); i++) {
+        sum += a[i];
+        if (i &gt;= k) sum -= a[i - k];
+        if (i &gt;= k - 1) best = max(best, sum);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Longest Substring with at most K Distinct (Fruits into Baskets = K = 2)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int longestKDistinct(string s, int k) {
+    unordered_map&lt;char, int&gt; freq;
+    int left = 0, best = 0;
+    for (int right = 0; right &lt; (int)s.size(); right++) {
+        freq[s[right]]++;
+        while ((int)freq.size() &gt; k) {
+            if (--freq[s[left]] == 0) freq.erase(s[left]);
+            left++;
+        }
+        best = max(best, right - left + 1);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Max Consecutive Ones III (at most K flips)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int longestOnes(vector&lt;int&gt;&amp; a, int k) {
+    int left = 0, zeros = 0, best = 0;
+    for (int right = 0; right &lt; (int)a.size(); right++) {
+        if (a[right] == 0) zeros++;
+        while (zeros &gt; k) if (a[left++] == 0) zeros--;
+        best = max(best, right - left + 1);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Longest Subarray with Sum = K (all positive)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int longestSubarraySumK(vector&lt;int&gt;&amp; a, long long k) {
+    int left = 0, best = 0; long long sum = 0;
+    for (int right = 0; right &lt; (int)a.size(); right++) {
+        sum += a[right];
+        while (sum &gt; k) sum -= a[left++];
+        if (sum == k) best = max(best, right - left + 1);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Longest Repeating Character Replacement</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int characterReplacement(string s, int k) {
+    int freq[26] = {}, left = 0, maxFreq = 0, best = 0;
+    for (int right = 0; right &lt; (int)s.size(); right++) {
+        maxFreq = max(maxFreq, ++freq[s[right] - 'A']);
+        while (right - left + 1 - maxFreq &gt; k) freq[s[left++] - 'A']--;
+        best = max(best, right - left + 1);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Two Sum in a Sorted Array</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; twoSumSorted(vector&lt;int&gt;&amp; a, int target) {
+    int lo = 0, hi = (int)a.size() - 1;
+    while (lo &lt; hi) {
+        int s = a[lo] + a[hi];
+        if (s == target) return {lo, hi};
+        if (s &lt; target) lo++; else hi--;
+    }
+    return {-1, -1};
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Container With Most Water</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int maxArea(vector&lt;int&gt;&amp; h) {
+    int lo = 0, hi = (int)h.size() - 1, best = 0;
+    while (lo &lt; hi) {
+        best = max(best, min(h[lo], h[hi]) * (hi - lo));
+        if (h[lo] &lt; h[hi]) lo++; else hi--;
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sliding Window Maximum (monotonic deque)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; maxSlidingWindow(vector&lt;int&gt;&amp; a, int k) {
+    deque&lt;int&gt; dq; vector&lt;int&gt; res;
+    for (int i = 0; i &lt; (int)a.size(); i++) {
+        if (!dq.empty() &amp;&amp; dq.front() &lt;= i - k) dq.pop_front();
+        while (!dq.empty() &amp;&amp; a[dq.back()] &lt;= a[i]) dq.pop_back();
+        dq.push_back(i);
+        if (i &gt;= k - 1) res.push_back(a[dq.front()]);
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Subarrays with Exactly K Distinct, atMost(K) − atMost(K−1)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int atMostK(vector&lt;int&gt;&amp; a, int k) {
+    unordered_map&lt;int, int&gt; freq;
+    int left = 0, count = 0;
+    for (int right = 0; right &lt; (int)a.size(); right++) {
+        freq[a[right]]++;
+        while ((int)freq.size() &gt; k) {
+            if (--freq[a[left]] == 0) freq.erase(a[left]);
+            left++;
+        }
+        count += right - left + 1;
+    }
+    return count;
+}
+int subarraysWithKDistinct(vector&lt;int&gt;&amp; a, int k) { return atMostK(a, k) - atMostK(a, k - 1); }</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -3077,6 +4885,116 @@ public:
         return (lower.top() + upper.top()) / 2.0;
     }
 };</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>K Closest Points to Origin</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; kClosest(vector&lt;vector&lt;int&gt;&gt;&amp; pts, int k) {
+    priority_queue&lt;pair&lt;int,int&gt;&gt; pq;                  // (dist², index) max-heap
+    for (int i = 0; i &lt; (int)pts.size(); i++) {
+        pq.push({pts[i][0] * pts[i][0] + pts[i][1] * pts[i][1], i});
+        if ((int)pq.size() &gt; k) pq.pop();
+    }
+    vector&lt;vector&lt;int&gt;&gt; res;
+    while (!pq.empty()) { res.push_back(pts[pq.top().second]); pq.pop(); }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Top K Frequent Elements</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; topKFrequent(vector&lt;int&gt;&amp; nums, int k) {
+    unordered_map&lt;int, int&gt; freq;
+    for (int x : nums) freq[x]++;
+    priority_queue&lt;pair&lt;int,int&gt;, vector&lt;pair&lt;int,int&gt;&gt;, greater&lt;&gt;&gt; pq;   // (freq, value)
+    for (auto&amp; [val, f] : freq) {
+        pq.push({f, val});
+        if ((int)pq.size() &gt; k) pq.pop();
+    }
+    vector&lt;int&gt; res;
+    while (!pq.empty()) { res.push_back(pq.top().second); pq.pop(); }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Connect Ropes with Minimum Cost</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long connectRopes(vector&lt;int&gt;&amp; ropes) {
+    priority_queue&lt;long long, vector&lt;long long&gt;, greater&lt;&gt;&gt; pq(ropes.begin(), ropes.end());
+    long long cost = 0;
+    while (pq.size() &gt; 1) {
+        long long a = pq.top(); pq.pop();
+        long long b = pq.top(); pq.pop();
+        cost += a + b;
+        pq.push(a + b);
+    }
+    return cost;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Task Scheduler (max-heap + cooldown)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int leastInterval(vector&lt;char&gt;&amp; tasks, int n) {
+    int freq[26] = {};
+    for (char t : tasks) freq[t - 'A']++;
+    priority_queue&lt;int&gt; pq;
+    for (int f : freq) if (f) pq.push(f);
+    int time = 0;
+    while (!pq.empty()) {
+        vector&lt;int&gt; temp; int cycle = n + 1;
+        while (cycle &gt; 0 &amp;&amp; !pq.empty()) {
+            int f = pq.top(); pq.pop();
+            if (--f &gt; 0) temp.push_back(f);
+            cycle--; time++;
+        }
+        for (int f : temp) pq.push(f);
+        if (!pq.empty()) time += cycle;                 // idle slots
+    }
+    return time;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Reorganize String</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string reorganizeString(string s) {
+    int freq[26] = {};
+    for (char c : s) freq[c - 'a']++;
+    priority_queue&lt;pair&lt;int,char&gt;&gt; pq;
+    for (int i = 0; i &lt; 26; i++) if (freq[i]) pq.push({freq[i], char('a' + i)});
+    string res;
+    while (pq.size() &gt;= 2) {
+        auto [f1, c1] = pq.top(); pq.pop();
+        auto [f2, c2] = pq.top(); pq.pop();
+        res += c1; res += c2;
+        if (--f1 &gt; 0) pq.push({f1, c1});
+        if (--f2 &gt; 0) pq.push({f2, c2});
+    }
+    if (!pq.empty()) {
+        if (pq.top().first &gt; 1) return "";
+        res += pq.top().second;
+    }
+    return res;
+}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -3219,6 +5137,201 @@ int jobSequencing(vector&lt;Job&gt;&amp; jobs) {
         }
     }
     return totalProfit;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Assign Cookies</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int findContentChildren(vector&lt;int&gt;&amp; g, vector&lt;int&gt;&amp; s) {
+    sort(g.begin(), g.end()); sort(s.begin(), s.end());
+    int i = 0, j = 0;
+    while (i &lt; (int)g.size() &amp;&amp; j &lt; (int)s.size()) { if (s[j] &gt;= g[i]) i++; j++; }
+    return i;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Lemonade Change</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool lemonadeChange(vector&lt;int&gt;&amp; bills) {
+    int five = 0, ten = 0;
+    for (int b : bills) {
+        if (b == 5) five++;
+        else if (b == 10) { if (!five) return false; five--; ten++; }
+        else {
+            if (ten &amp;&amp; five) { ten--; five--; }
+            else if (five &gt;= 3) five -= 3;
+            else return false;
+        }
+    }
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Fractional Knapsack</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">double fractionalKnapsack(vector&lt;pair&lt;int,int&gt;&gt;&amp; items, int W) {     // (value, weight)
+    sort(items.begin(), items.end(), [](auto&amp; a, auto&amp; b) {
+        return (double)a.first / a.second &gt; (double)b.first / b.second;
+    });
+    double total = 0;
+    for (auto&amp; [val, wt] : items) {
+        if (W &gt;= wt) { total += val; W -= wt; }
+        else { total += (double)val * W / wt; break; }
+    }
+    return total;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Minimum Platforms / Meeting Rooms</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int minPlatforms(vector&lt;int&gt;&amp; arr, vector&lt;int&gt;&amp; dep) {
+    sort(arr.begin(), arr.end()); sort(dep.begin(), dep.end());
+    int need = 0, best = 0, i = 0, j = 0, n = arr.size();
+    while (i &lt; n) {
+        if (arr[i] &lt;= dep[j]) { need++; i++; }
+        else { need--; j++; }
+        best = max(best, need);
+    }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Jump Game II (greedy range extension)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int jump(vector&lt;int&gt;&amp; a) {
+    int jumps = 0, curEnd = 0, farthest = 0;
+    for (int i = 0; i &lt; (int)a.size() - 1; i++) {
+        farthest = max(farthest, i + a[i]);
+        if (i == curEnd) { jumps++; curEnd = farthest; }
+    }
+    return jumps;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Gas Station</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int canCompleteCircuit(vector&lt;int&gt;&amp; gas, vector&lt;int&gt;&amp; cost) {
+    int total = 0, tank = 0, start = 0;
+    for (int i = 0; i &lt; (int)gas.size(); i++) {
+        int diff = gas[i] - cost[i];
+        total += diff; tank += diff;
+        if (tank &lt; 0) { start = i + 1; tank = 0; }
+    }
+    return total &gt;= 0 ? start : -1;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Candy (two-pass)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int candy(vector&lt;int&gt;&amp; r) {
+    int n = r.size();
+    vector&lt;int&gt; c(n, 1);
+    for (int i = 1; i &lt; n; i++) if (r[i] &gt; r[i - 1]) c[i] = c[i - 1] + 1;
+    for (int i = n - 2; i &gt;= 0; i--) if (r[i] &gt; r[i + 1]) c[i] = max(c[i], c[i + 1] + 1);
+    return accumulate(c.begin(), c.end(), 0);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Insert Interval</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; insertInterval(vector&lt;vector&lt;int&gt;&gt;&amp; iv, vector&lt;int&gt; nw) {
+    vector&lt;vector&lt;int&gt;&gt; res;
+    int i = 0, n = iv.size();
+    while (i &lt; n &amp;&amp; iv[i][1] &lt; nw[0]) res.push_back(iv[i++]);
+    while (i &lt; n &amp;&amp; iv[i][0] &lt;= nw[1]) {
+        nw[0] = min(nw[0], iv[i][0]);
+        nw[1] = max(nw[1], iv[i][1]);
+        i++;
+    }
+    res.push_back(nw);
+    while (i &lt; n) res.push_back(iv[i++]);
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Partition Labels</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; partitionLabels(string s) {
+    int last[26] = {};
+    for (int i = 0; i &lt; (int)s.size(); i++) last[s[i] - 'a'] = i;
+    vector&lt;int&gt; res; int start = 0, end = 0;
+    for (int i = 0; i &lt; (int)s.size(); i++) {
+        end = max(end, last[s[i] - 'a']);
+        if (i == end) { res.push_back(end - start + 1); start = i + 1; }
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Huffman Encoding</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct HNode {
+    char ch; int freq; HNode *left, *right;
+    HNode(char c, int f) : ch(c), freq(f), left(nullptr), right(nullptr) {}
+};
+struct HCmp { bool operator()(HNode* a, HNode* b) { return a-&gt;freq &gt; b-&gt;freq; } };
+
+void buildCodes(HNode* node, string code, unordered_map&lt;char, string&gt;&amp; codes) {
+    if (!node) return;
+    if (!node-&gt;left &amp;&amp; !node-&gt;right) { codes[node-&gt;ch] = code.empty() ? "0" : code; return; }
+    buildCodes(node-&gt;left,  code + "0", codes);
+    buildCodes(node-&gt;right, code + "1", codes);
+}
+unordered_map&lt;char, string&gt; huffman(const string&amp; s) {
+    unordered_map&lt;char, int&gt; freq;
+    for (char c : s) freq[c]++;
+    priority_queue&lt;HNode*, vector&lt;HNode*&gt;, HCmp&gt; pq;
+    for (auto&amp; [c, f] : freq) pq.push(new HNode(c, f));
+    while (pq.size() &gt; 1) {
+        HNode *a = pq.top(); pq.pop();
+        HNode *b = pq.top(); pq.pop();
+        HNode* parent = new HNode('#', a-&gt;freq + b-&gt;freq);
+        parent-&gt;left = a; parent-&gt;right = b;
+        pq.push(parent);
+    }
+    unordered_map&lt;char, string&gt; codes;
+    if (!pq.empty()) buildCodes(pq.top(), "", codes);
+    return codes;
 }</code></pre>
                         </div>
                     </div>
@@ -3402,6 +5515,224 @@ int diameterOfBinaryTree(TreeNode* root) {
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Preorder / Inorder / Postorder (iterative)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; preorderIter(TreeNode* root) {
+    vector&lt;int&gt; res; if (!root) return res;
+    stack&lt;TreeNode*&gt; st; st.push(root);
+    while (!st.empty()) {
+        TreeNode* n = st.top(); st.pop();
+        res.push_back(n-&gt;val);
+        if (n-&gt;right) st.push(n-&gt;right);
+        if (n-&gt;left)  st.push(n-&gt;left);
+    }
+    return res;
+}
+vector&lt;int&gt; inorderIter(TreeNode* root) {
+    vector&lt;int&gt; res; stack&lt;TreeNode*&gt; st; TreeNode* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) { st.push(cur); cur = cur-&gt;left; }
+        cur = st.top(); st.pop();
+        res.push_back(cur-&gt;val);
+        cur = cur-&gt;right;
+    }
+    return res;
+}
+vector&lt;int&gt; postorderIter(TreeNode* root) {           // reversed (root, right, left)
+    vector&lt;int&gt; res; if (!root) return res;
+    stack&lt;TreeNode*&gt; st; st.push(root);
+    while (!st.empty()) {
+        TreeNode* n = st.top(); st.pop();
+        res.push_back(n-&gt;val);
+        if (n-&gt;left)  st.push(n-&gt;left);
+        if (n-&gt;right) st.push(n-&gt;right);
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Morris Inorder Traversal, O(1) space</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; morrisInorder(TreeNode* root) {
+    vector&lt;int&gt; res; TreeNode* cur = root;
+    while (cur) {
+        if (!cur-&gt;left) { res.push_back(cur-&gt;val); cur = cur-&gt;right; }
+        else {
+            TreeNode* pred = cur-&gt;left;
+            while (pred-&gt;right &amp;&amp; pred-&gt;right != cur) pred = pred-&gt;right;
+            if (!pred-&gt;right) { pred-&gt;right = cur; cur = cur-&gt;left; }          // create thread
+            else { pred-&gt;right = nullptr; res.push_back(cur-&gt;val); cur = cur-&gt;right; }  // remove thread
+        }
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Balanced Binary Tree (−1 sentinel)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int checkHeight(TreeNode* n) {
+    if (!n) return 0;
+    int l = checkHeight(n-&gt;left);  if (l == -1) return -1;
+    int r = checkHeight(n-&gt;right); if (r == -1) return -1;
+    if (abs(l - r) &gt; 1) return -1;
+    return 1 + max(l, r);
+}
+bool isBalanced(TreeNode* root) { return checkHeight(root) != -1; }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Zigzag Level Order</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; zigzagLevelOrder(TreeNode* root) {
+    vector&lt;vector&lt;int&gt;&gt; res; if (!root) return res;
+    queue&lt;TreeNode*&gt; q; q.push(root);
+    bool leftToRight = true;
+    while (!q.empty()) {
+        int sz = q.size(); vector&lt;int&gt; level(sz);
+        for (int i = 0; i &lt; sz; i++) {
+            TreeNode* n = q.front(); q.pop();
+            level[leftToRight ? i : sz - 1 - i] = n-&gt;val;
+            if (n-&gt;left)  q.push(n-&gt;left);
+            if (n-&gt;right) q.push(n-&gt;right);
+        }
+        res.push_back(level);
+        leftToRight = !leftToRight;
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Construct Tree from Preorder + Inorder</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">TreeNode* buildRec(vector&lt;int&gt;&amp; pre, int&amp; idx, int lo, int hi, unordered_map&lt;int,int&gt;&amp; pos) {
+    if (lo &gt; hi) return nullptr;
+    TreeNode* root = new TreeNode(pre[idx++]);
+    int mid = pos[root-&gt;val];
+    root-&gt;left  = buildRec(pre, idx, lo, mid - 1, pos);
+    root-&gt;right = buildRec(pre, idx, mid + 1, hi, pos);
+    return root;
+}
+TreeNode* buildTree(vector&lt;int&gt;&amp; pre, vector&lt;int&gt;&amp; in) {
+    unordered_map&lt;int,int&gt; pos;
+    for (int i = 0; i &lt; (int)in.size(); i++) pos[in[i]] = i;
+    int idx = 0;
+    return buildRec(pre, idx, 0, (int)in.size() - 1, pos);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Symmetric Tree</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isMirror(TreeNode* a, TreeNode* b) {
+    if (!a &amp;&amp; !b) return true;
+    if (!a || !b || a-&gt;val != b-&gt;val) return false;
+    return isMirror(a-&gt;left, b-&gt;right) &amp;&amp; isMirror(a-&gt;right, b-&gt;left);
+}
+bool isSymmetric(TreeNode* root) { return !root || isMirror(root-&gt;left, root-&gt;right); }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Serialize / Deserialize (preorder with null markers)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string serialize(TreeNode* root) {
+    if (!root) return "#,";
+    return to_string(root-&gt;val) + "," + serialize(root-&gt;left) + serialize(root-&gt;right);
+}
+TreeNode* deserializeRec(stringstream&amp; ss) {
+    string tok;
+    if (!getline(ss, tok, ',') || tok == "#") return nullptr;
+    TreeNode* node = new TreeNode(stoi(tok));
+    node-&gt;left = deserializeRec(ss);
+    node-&gt;right = deserializeRec(ss);
+    return node;
+}
+TreeNode* deserialize(const string&amp; data) { stringstream ss(data); return deserializeRec(ss); }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Right View (DFS with depth; for left view visit left first)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void rightDfs(TreeNode* n, int depth, vector&lt;int&gt;&amp; res) {
+    if (!n) return;
+    if (depth == (int)res.size()) res.push_back(n-&gt;val);
+    rightDfs(n-&gt;right, depth + 1, res);
+    rightDfs(n-&gt;left,  depth + 1, res);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Flatten Tree to Linked List (reverse postorder)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">TreeNode* prevNode = nullptr;                    // reset to nullptr before each call
+void flattenTree(TreeNode* root) {
+    if (!root) return;
+    flattenTree(root-&gt;right);
+    flattenTree(root-&gt;left);
+    root-&gt;right = prevNode;
+    root-&gt;left = nullptr;
+    prevNode = root;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Vertical Order Traversal</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; verticalTraversal(TreeNode* root) {
+    map&lt;int, map&lt;int, multiset&lt;int&gt;&gt;&gt; nodes;             // col -&gt; row -&gt; values
+    queue&lt;tuple&lt;TreeNode*, int, int&gt;&gt; q;
+    q.push({root, 0, 0});
+    while (!q.empty()) {
+        auto [n, col, row] = q.front(); q.pop();
+        if (!n) continue;
+        nodes[col][row].insert(n-&gt;val);
+        q.push({n-&gt;left,  col - 1, row + 1});
+        q.push({n-&gt;right, col + 1, row + 1});
+    }
+    vector&lt;vector&lt;int&gt;&gt; res;
+    for (auto&amp; [col, rows] : nodes) {
+        vector&lt;int&gt; vals;
+        for (auto&amp; [row, ms] : rows) vals.insert(vals.end(), ms.begin(), ms.end());
+        res.push_back(vals);
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -3515,6 +5846,147 @@ bool isValidBST(TreeNode* root) {
         if (--k == 0) return cur-&gt;val;
         cur = cur-&gt;right;
     }
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Search and Delete in a BST</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">TreeNode* searchBST(TreeNode* root, int val) {
+    while (root &amp;&amp; root-&gt;val != val) root = val &lt; root-&gt;val ? root-&gt;left : root-&gt;right;
+    return root;
+}
+TreeNode* deleteNode(TreeNode* root, int key) {
+    if (!root) return nullptr;
+    if (key &lt; root-&gt;val) root-&gt;left = deleteNode(root-&gt;left, key);
+    else if (key &gt; root-&gt;val) root-&gt;right = deleteNode(root-&gt;right, key);
+    else {
+        if (!root-&gt;left)  { TreeNode* r = root-&gt;right; delete root; return r; }
+        if (!root-&gt;right) { TreeNode* l = root-&gt;left;  delete root; return l; }
+        TreeNode* succ = root-&gt;right;                    // inorder successor
+        while (succ-&gt;left) succ = succ-&gt;left;
+        root-&gt;val = succ-&gt;val;
+        root-&gt;right = deleteNode(root-&gt;right, succ-&gt;val);
+    }
+    return root;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>LCA in a BST</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">TreeNode* lcaBST(TreeNode* root, TreeNode* p, TreeNode* q) {
+    while (root) {
+        if (p-&gt;val &lt; root-&gt;val &amp;&amp; q-&gt;val &lt; root-&gt;val) root = root-&gt;left;
+        else if (p-&gt;val &gt; root-&gt;val &amp;&amp; q-&gt;val &gt; root-&gt;val) root = root-&gt;right;
+        else return root;
+    }
+    return nullptr;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sorted Array → Balanced BST</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">TreeNode* sortedArrayToBST(vector&lt;int&gt;&amp; a, int lo, int hi) {
+    if (lo &gt; hi) return nullptr;
+    int mid = lo + (hi - lo) / 2;
+    TreeNode* root = new TreeNode(a[mid]);
+    root-&gt;left  = sortedArrayToBST(a, lo, mid - 1);
+    root-&gt;right = sortedArrayToBST(a, mid + 1, hi);
+    return root;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>BST Iterator, O(1) amortized next()</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">class BSTIterator {
+    stack&lt;TreeNode*&gt; st;
+    void pushLeft(TreeNode* n) { while (n) { st.push(n); n = n-&gt;left; } }
+public:
+    BSTIterator(TreeNode* root) { pushLeft(root); }
+    int next() { TreeNode* n = st.top(); st.pop(); pushLeft(n-&gt;right); return n-&gt;val; }
+    bool hasNext() { return !st.empty(); }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Two Sum in a BST (inorder + two pointers)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void inorderCollect(TreeNode* n, vector&lt;int&gt;&amp; v) {
+    if (!n) return;
+    inorderCollect(n-&gt;left, v); v.push_back(n-&gt;val); inorderCollect(n-&gt;right, v);
+}
+bool findTarget(TreeNode* root, int k) {
+    vector&lt;int&gt; v; inorderCollect(root, v);
+    int lo = 0, hi = (int)v.size() - 1;
+    while (lo &lt; hi) {
+        int s = v[lo] + v[hi];
+        if (s == k) return true;
+        if (s &lt; k) lo++; else hi--;
+    }
+    return false;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Recover BST (two nodes swapped)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">TreeNode *firstBad = nullptr, *secondBad = nullptr, *prevN = nullptr;
+void recoverDfs(TreeNode* n) {
+    if (!n) return;
+    recoverDfs(n-&gt;left);
+    if (prevN &amp;&amp; prevN-&gt;val &gt; n-&gt;val) { if (!firstBad) firstBad = prevN; secondBad = n; }
+    prevN = n;
+    recoverDfs(n-&gt;right);
+}
+void recoverTree(TreeNode* root) {
+    firstBad = secondBad = prevN = nullptr;
+    recoverDfs(root);
+    swap(firstBad-&gt;val, secondBad-&gt;val);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Floor / Ceil in a BST</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int floorBST(TreeNode* root, int x) {            // largest value &lt;= x, else -1
+    int ans = -1;
+    while (root) {
+        if (root-&gt;val == x) return x;
+        if (root-&gt;val &lt; x) { ans = root-&gt;val; root = root-&gt;right; } else root = root-&gt;left;
+    }
+    return ans;
+}
+int ceilBST(TreeNode* root, int x) {             // smallest value &gt;= x, else -1
+    int ans = -1;
+    while (root) {
+        if (root-&gt;val == x) return x;
+        if (root-&gt;val &gt; x) { ans = root-&gt;val; root = root-&gt;left; } else root = root-&gt;right;
+    }
+    return ans;
 }</code></pre>
                         </div>
                     </div>
@@ -3784,6 +6256,301 @@ vector&lt;long long&gt; bellmanFord(int n, int src, vector&lt;Edge&gt;&amp; edge
 };</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Number of Islands (flood fill)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void floodFill(vector&lt;vector&lt;char&gt;&gt;&amp; g, int i, int j) {
+    if (i &lt; 0 || j &lt; 0 || i &gt;= (int)g.size() || j &gt;= (int)g[0].size() || g[i][j] != '1') return;
+    g[i][j] = '0';
+    floodFill(g, i + 1, j); floodFill(g, i - 1, j); floodFill(g, i, j + 1); floodFill(g, i, j - 1);
+}
+int numIslands(vector&lt;vector&lt;char&gt;&gt;&amp; g) {
+    int count = 0;
+    for (int i = 0; i &lt; (int)g.size(); i++)
+        for (int j = 0; j &lt; (int)g[0].size(); j++)
+            if (g[i][j] == '1') { count++; floodFill(g, i, j); }
+    return count;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Shortest Path in an Unweighted Grid (BFS)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int shortestPathGrid(vector&lt;vector&lt;int&gt;&gt;&amp; g, int sr, int sc, int tr, int tc) {   // 0 free, 1 wall
+    int R = g.size(), C = g[0].size();
+    if (g[sr][sc] || g[tr][tc]) return -1;
+    vector&lt;vector&lt;int&gt;&gt; dist(R, vector&lt;int&gt;(C, -1));
+    queue&lt;pair&lt;int,int&gt;&gt; q;
+    dist[sr][sc] = 0; q.push({sr, sc});
+    int dr[] = {1, -1, 0, 0}, dc[] = {0, 0, 1, -1};
+    while (!q.empty()) {
+        auto [r, c] = q.front(); q.pop();
+        if (r == tr &amp;&amp; c == tc) return dist[r][c];
+        for (int d = 0; d &lt; 4; d++) {
+            int nr = r + dr[d], nc = c + dc[d];
+            if (nr &lt; 0 || nc &lt; 0 || nr &gt;= R || nc &gt;= C || g[nr][nc] || dist[nr][nc] != -1) continue;
+            dist[nr][nc] = dist[r][c] + 1;
+            q.push({nr, nc});
+        }
+    }
+    return -1;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Rotten Oranges (multi-source BFS)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int orangesRotting(vector&lt;vector&lt;int&gt;&gt;&amp; g) {
+    int R = g.size(), C = g[0].size(), fresh = 0, minutes = 0;
+    queue&lt;pair&lt;int,int&gt;&gt; q;
+    for (int i = 0; i &lt; R; i++)
+        for (int j = 0; j &lt; C; j++) {
+            if (g[i][j] == 2) q.push({i, j});
+            else if (g[i][j] == 1) fresh++;
+        }
+    int dr[] = {1, -1, 0, 0}, dc[] = {0, 0, 1, -1};
+    while (!q.empty() &amp;&amp; fresh) {
+        int sz = q.size();
+        while (sz--) {
+            auto [r, c] = q.front(); q.pop();
+            for (int d = 0; d &lt; 4; d++) {
+                int nr = r + dr[d], nc = c + dc[d];
+                if (nr &lt; 0 || nc &lt; 0 || nr &gt;= R || nc &gt;= C || g[nr][nc] != 1) continue;
+                g[nr][nc] = 2; fresh--; q.push({nr, nc});
+            }
+        }
+        minutes++;
+    }
+    return fresh ? -1 : minutes;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Cycle Detection: Undirected (parent tracking) and Directed (recursion stack)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool hasCycleUndirected(int u, int parent, vector&lt;vector&lt;int&gt;&gt;&amp; adj, vector&lt;bool&gt;&amp; vis) {
+    vis[u] = true;
+    for (int v : adj[u]) {
+        if (!vis[v]) { if (hasCycleUndirected(v, u, adj, vis)) return true; }
+        else if (v != parent) return true;
+    }
+    return false;
+}
+bool hasCycleDirected(int u, vector&lt;vector&lt;int&gt;&gt;&amp; adj, vector&lt;int&gt;&amp; state) {   // 0 new, 1 on stack, 2 done
+    state[u] = 1;
+    for (int v : adj[u]) {
+        if (state[v] == 1) return true;
+        if (state[v] == 0 &amp;&amp; hasCycleDirected(v, adj, state)) return true;
+    }
+    state[u] = 2;
+    return false;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Bipartite Check (BFS 2-coloring)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isBipartite(vector&lt;vector&lt;int&gt;&gt;&amp; adj) {
+    int n = adj.size();
+    vector&lt;int&gt; color(n, -1);
+    for (int s = 0; s &lt; n; s++) {
+        if (color[s] != -1) continue;
+        queue&lt;int&gt; q; q.push(s); color[s] = 0;
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int v : adj[u]) {
+                if (color[v] == -1) { color[v] = color[u] ^ 1; q.push(v); }
+                else if (color[v] == color[u]) return false;
+            }
+        }
+    }
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Prim's MST</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long primMST(int n, vector&lt;vector&lt;pair&lt;int,int&gt;&gt;&gt;&amp; adj) {      // adj[u] = {v, w}
+    vector&lt;bool&gt; inMST(n, false);
+    priority_queue&lt;pair&lt;int,int&gt;, vector&lt;pair&lt;int,int&gt;&gt;, greater&lt;&gt;&gt; pq;
+    pq.push({0, 0});
+    long long total = 0;
+    while (!pq.empty()) {
+        auto [w, u] = pq.top(); pq.pop();
+        if (inMST[u]) continue;
+        inMST[u] = true; total += w;
+        for (auto&amp; [v, wt] : adj[u]) if (!inMST[v]) pq.push({wt, v});
+    }
+    return total;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Floyd–Warshall (all-pairs)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">const long long INF = 1e18;
+void floydWarshall(vector&lt;vector&lt;long long&gt;&gt;&amp; d) {      // d[i][i] = 0, no edge = INF
+    int n = d.size();
+    for (int k = 0; k &lt; n; k++)
+        for (int i = 0; i &lt; n; i++)
+            for (int j = 0; j &lt; n; j++)
+                if (d[i][k] &lt; INF &amp;&amp; d[k][j] &lt; INF) d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Clone a Graph</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct GNode { int val; vector&lt;GNode*&gt; neighbors; GNode(int v) : val(v) {} };
+
+GNode* cloneGraph(GNode* node) {
+    if (!node) return nullptr;
+    unordered_map&lt;GNode*, GNode*&gt; copy;
+    queue&lt;GNode*&gt; q;
+    copy[node] = new GNode(node-&gt;val); q.push(node);
+    while (!q.empty()) {
+        GNode* cur = q.front(); q.pop();
+        for (GNode* nb : cur-&gt;neighbors) {
+            if (!copy.count(nb)) { copy[nb] = new GNode(nb-&gt;val); q.push(nb); }
+            copy[cur]-&gt;neighbors.push_back(copy[nb]);
+        }
+    }
+    return copy[node];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Word Ladder</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int ladderLength(string begin, string end, vector&lt;string&gt;&amp; wordList) {
+    unordered_set&lt;string&gt; dict(wordList.begin(), wordList.end());
+    if (!dict.count(end)) return 0;
+    queue&lt;pair&lt;string,int&gt;&gt; q;
+    q.push({begin, 1}); dict.erase(begin);
+    while (!q.empty()) {
+        auto [word, steps] = q.front(); q.pop();
+        if (word == end) return steps;
+        for (int i = 0; i &lt; (int)word.size(); i++) {
+            char orig = word[i];
+            for (char c = 'a'; c &lt;= 'z'; c++) {
+                word[i] = c;
+                if (dict.count(word)) { dict.erase(word); q.push({word, steps + 1}); }
+            }
+            word[i] = orig;
+        }
+    }
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Alien Dictionary (graph from adjacent words + Kahn)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string alienOrder(vector&lt;string&gt;&amp; words) {
+    vector&lt;vector&lt;int&gt;&gt; adj(26);
+    vector&lt;int&gt; indeg(26, 0); vector&lt;bool&gt; present(26, false);
+    for (auto&amp; w : words) for (char c : w) present[c - 'a'] = true;
+    for (int i = 0; i + 1 &lt; (int)words.size(); i++) {
+        string &amp;a = words[i], &amp;b = words[i + 1];
+        int len = min(a.size(), b.size()), j = 0;
+        while (j &lt; len &amp;&amp; a[j] == b[j]) j++;
+        if (j == len) { if (a.size() &gt; b.size()) return ""; continue; }   // "abc" before "ab" is invalid
+        adj[a[j] - 'a'].push_back(b[j] - 'a');
+        indeg[b[j] - 'a']++;
+    }
+    queue&lt;int&gt; q; string res; int total = 0;
+    for (int i = 0; i &lt; 26; i++) if (present[i]) { total++; if (!indeg[i]) q.push(i); }
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        res += char('a' + u);
+        for (int v : adj[u]) if (--indeg[v] == 0) q.push(v);
+    }
+    return (int)res.size() == total ? res : "";
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Critical Connections, Tarjan's bridges</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int timer_ = 0;
+void bridgeDfs(int u, int parent, vector&lt;vector&lt;int&gt;&gt;&amp; adj, vector&lt;int&gt;&amp; tin, vector&lt;int&gt;&amp; low,
+               vector&lt;vector&lt;int&gt;&gt;&amp; bridges) {
+    tin[u] = low[u] = ++timer_;
+    for (int v : adj[u]) {
+        if (v == parent) continue;
+        if (tin[v]) low[u] = min(low[u], tin[v]);
+        else {
+            bridgeDfs(v, u, adj, tin, low, bridges);
+            low[u] = min(low[u], low[v]);
+            if (low[v] &gt; tin[u]) bridges.push_back({u, v});
+        }
+    }
+}
+vector&lt;vector&lt;int&gt;&gt; criticalConnections(int n, vector&lt;vector&lt;int&gt;&gt;&amp; edges) {
+    vector&lt;vector&lt;int&gt;&gt; adj(n), bridges;
+    for (auto&amp; e : edges) { adj[e[0]].push_back(e[1]); adj[e[1]].push_back(e[0]); }
+    vector&lt;int&gt; tin(n, 0), low(n, 0);
+    timer_ = 0;
+    for (int i = 0; i &lt; n; i++) if (!tin[i]) bridgeDfs(i, -1, adj, tin, low, bridges);
+    return bridges;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Cheapest Flights Within K Stops (Bellman–Ford, K+1 rounds)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int findCheapestPrice(int n, vector&lt;vector&lt;int&gt;&gt;&amp; flights, int src, int dst, int k) {
+    vector&lt;int&gt; dist(n, INT_MAX);
+    dist[src] = 0;
+    for (int i = 0; i &lt;= k; i++) {
+        vector&lt;int&gt; tmp = dist;
+        for (auto&amp; f : flights) {
+            int u = f[0], v = f[1], w = f[2];
+            if (dist[u] != INT_MAX &amp;&amp; dist[u] + w &lt; tmp[v]) tmp[v] = dist[u] + w;
+        }
+        dist = tmp;
+    }
+    return dist[dst] == INT_MAX ? -1 : dist[dst];
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -3961,6 +6728,178 @@ vector&lt;long long&gt; bellmanFord(int n, int src, vector&lt;Edge&gt;&amp; edge
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Climbing Stairs and House Robber (1D, O(1) space)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int climbStairs(int n) {
+    int a = 1, b = 1;
+    for (int i = 2; i &lt;= n; i++) { int c = a + b; a = b; b = c; }
+    return b;
+}
+int houseRobber(vector&lt;int&gt;&amp; a) {
+    int take = 0, skip = 0;
+    for (int x : a) { int newTake = skip + x; skip = max(skip, take); take = newTake; }
+    return max(take, skip);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Grid DP: Unique Paths and Min Path Sum</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int uniquePaths(int m, int n) {
+    vector&lt;int&gt; dp(n, 1);
+    for (int i = 1; i &lt; m; i++)
+        for (int j = 1; j &lt; n; j++) dp[j] += dp[j - 1];
+    return dp[n - 1];
+}
+int minPathSum(vector&lt;vector&lt;int&gt;&gt;&amp; g) {
+    int R = g.size(), C = g[0].size();
+    vector&lt;vector&lt;int&gt;&gt; dp(R, vector&lt;int&gt;(C, 0));
+    for (int i = 0; i &lt; R; i++)
+        for (int j = 0; j &lt; C; j++) {
+            if (!i &amp;&amp; !j) dp[i][j] = g[i][j];
+            else dp[i][j] = g[i][j] + min(i ? dp[i - 1][j] : INT_MAX, j ? dp[i][j - 1] : INT_MAX);
+        }
+    return dp[R - 1][C - 1];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Subset Sum / Partition Equal Subset Sum (0/1)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool canPartition(vector&lt;int&gt;&amp; a) {
+    int sum = accumulate(a.begin(), a.end(), 0);
+    if (sum % 2) return false;
+    int target = sum / 2;
+    vector&lt;bool&gt; dp(target + 1, false); dp[0] = true;
+    for (int x : a)
+        for (int s = target; s &gt;= x; s--) dp[s] = dp[s] || dp[s - x];
+    return dp[target];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Coin Change II (number of ways, unbounded)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long coinWays(int amount, vector&lt;int&gt;&amp; coins) {
+    vector&lt;long long&gt; dp(amount + 1, 0); dp[0] = 1;
+    for (int c : coins)                         // coins outer loop = combinations, not permutations
+        for (int a = c; a &lt;= amount; a++) dp[a] += dp[a - c];
+    return dp[amount];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Edit Distance</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int editDistance(string a, string b) {
+    int n = a.size(), m = b.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n + 1, vector&lt;int&gt;(m + 1, 0));
+    for (int i = 0; i &lt;= n; i++) dp[i][0] = i;
+    for (int j = 0; j &lt;= m; j++) dp[0][j] = j;
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 1; j &lt;= m; j++)
+            dp[i][j] = a[i - 1] == b[j - 1] ? dp[i - 1][j - 1]
+                     : 1 + min({dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]});
+    return dp[n][m];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Longest Palindromic Subsequence and Count Palindromic Substrings</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int longestPalindromeSubseq(string s) {
+    string r(s.rbegin(), s.rend());
+    return longestCommonSubsequence(s, r);        // LCS from above
+}
+int countSubstrings(string s) {
+    int n = s.size(), count = 0;
+    vector&lt;vector&lt;bool&gt;&gt; dp(n, vector&lt;bool&gt;(n, false));
+    for (int i = n - 1; i &gt;= 0; i--)
+        for (int j = i; j &lt; n; j++)
+            if (s[i] == s[j] &amp;&amp; (j - i &lt; 2 || dp[i + 1][j - 1])) { dp[i][j] = true; count++; }
+    return count;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Distinct Subsequences</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long numDistinct(string s, string t) {
+    int n = s.size(), m = t.size();
+    vector&lt;vector&lt;long long&gt;&gt; dp(n + 1, vector&lt;long long&gt;(m + 1, 0));
+    for (int i = 0; i &lt;= n; i++) dp[i][0] = 1;
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 1; j &lt;= m; j++) {
+            dp[i][j] = dp[i - 1][j];
+            if (s[i - 1] == t[j - 1]) dp[i][j] += dp[i - 1][j - 1];
+        }
+    return dp[n][m];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Burst Balloons (interval DP, k = last balloon)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int maxCoins(vector&lt;int&gt;&amp; nums) {
+    vector&lt;int&gt; a = {1};
+    a.insert(a.end(), nums.begin(), nums.end());
+    a.push_back(1);
+    int n = a.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(n, 0));
+    for (int len = 2; len &lt; n; len++)
+        for (int i = 0; i + len &lt; n; i++) {
+            int j = i + len;
+            for (int k = i + 1; k &lt; j; k++)
+                dp[i][j] = max(dp[i][j], dp[i][k] + a[i] * a[k] * a[j] + dp[k][j]);
+        }
+    return dp[0][n - 1];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Buy/Sell Stock with Cooldown (state machine)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int maxProfitCooldown(vector&lt;int&gt;&amp; p) {
+    int hold = INT_MIN, sold = 0, rest = 0;
+    for (int price : p) {
+        int prevSold = sold;
+        sold = hold + price;
+        hold = max(hold, rest - price);
+        rest = max(rest, prevSold);
+    }
+    return max(sold, rest);
+}
+// With transaction fee: hold = max(hold, cash - price); cash = max(cash, hold + price - fee);</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -4055,6 +6994,153 @@ private:
         return node;
     }
 };</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Maximum XOR of Two Numbers (binary trie)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct BitTrie {
+    struct Node { Node* ch[2] = {nullptr, nullptr}; };
+    Node* root = new Node();
+    void insert(int x) {
+        Node* cur = root;
+        for (int b = 30; b &gt;= 0; b--) {
+            int bit = (x &gt;&gt; b) &amp; 1;
+            if (!cur-&gt;ch[bit]) cur-&gt;ch[bit] = new Node();
+            cur = cur-&gt;ch[bit];
+        }
+    }
+    int maxXorWith(int x) {
+        Node* cur = root; int res = 0;
+        for (int b = 30; b &gt;= 0; b--) {
+            int bit = (x &gt;&gt; b) &amp; 1;
+            if (cur-&gt;ch[bit ^ 1]) { res |= (1 &lt;&lt; b); cur = cur-&gt;ch[bit ^ 1]; }
+            else cur = cur-&gt;ch[bit];
+        }
+        return res;
+    }
+};
+int findMaximumXOR(vector&lt;int&gt;&amp; a) {
+    BitTrie t; int best = 0;
+    t.insert(a[0]);
+    for (int i = 1; i &lt; (int)a.size(); i++) { best = max(best, t.maxXorWith(a[i])); t.insert(a[i]); }
+    return best;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Word Search II (trie + grid DFS)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct WNode { WNode* next[26] = {}; string word; };
+
+void wordDfs2(vector&lt;vector&lt;char&gt;&gt;&amp; b, int i, int j, WNode* node, vector&lt;string&gt;&amp; res) {
+    char c = b[i][j];
+    if (c == '#' || !node-&gt;next[c - 'a']) return;
+    node = node-&gt;next[c - 'a'];
+    if (!node-&gt;word.empty()) { res.push_back(node-&gt;word); node-&gt;word.clear(); }   // avoid duplicates
+    b[i][j] = '#';
+    if (i &gt; 0) wordDfs2(b, i - 1, j, node, res);
+    if (j &gt; 0) wordDfs2(b, i, j - 1, node, res);
+    if (i + 1 &lt; (int)b.size())    wordDfs2(b, i + 1, j, node, res);
+    if (j + 1 &lt; (int)b[0].size()) wordDfs2(b, i, j + 1, node, res);
+    b[i][j] = c;
+}
+vector&lt;string&gt; findWords(vector&lt;vector&lt;char&gt;&gt;&amp; b, vector&lt;string&gt;&amp; words) {
+    WNode* root = new WNode();
+    for (auto&amp; w : words) {
+        WNode* cur = root;
+        for (char c : w) {
+            if (!cur-&gt;next[c - 'a']) cur-&gt;next[c - 'a'] = new WNode();
+            cur = cur-&gt;next[c - 'a'];
+        }
+        cur-&gt;word = w;
+    }
+    vector&lt;string&gt; res;
+    for (int i = 0; i &lt; (int)b.size(); i++)
+        for (int j = 0; j &lt; (int)b[0].size(); j++) wordDfs2(b, i, j, root, res);
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Autocomplete (uses TrieNode from the trie example)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">void collect(TrieNode* node, string&amp; cur, vector&lt;string&gt;&amp; out) {
+    if (node-&gt;isEnd) out.push_back(cur);
+    for (int i = 0; i &lt; 26; i++)
+        if (node-&gt;children[i]) {
+            cur.push_back('a' + i);
+            collect(node-&gt;children[i], cur, out);
+            cur.pop_back();
+        }
+}
+vector&lt;string&gt; autocomplete(TrieNode* root, const string&amp; prefix) {
+    TrieNode* node = root;
+    for (char c : prefix) { node = node-&gt;children[c - 'a']; if (!node) return {}; }
+    vector&lt;string&gt; out; string cur = prefix;
+    collect(node, cur, out);
+    return out;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Replace Words with Shortest Dictionary Root</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string replaceWords(vector&lt;string&gt;&amp; dict, string sentence) {
+    TrieNode* root = new TrieNode();
+    for (auto&amp; d : dict) {
+        TrieNode* cur = root;
+        for (char c : d) {
+            if (!cur-&gt;children[c - 'a']) cur-&gt;children[c - 'a'] = new TrieNode();
+            cur = cur-&gt;children[c - 'a'];
+        }
+        cur-&gt;isEnd = true;
+    }
+    stringstream ss(sentence); string w, res;
+    while (ss &gt;&gt; w) {
+        TrieNode* cur = root; string prefix; bool found = false;
+        for (char c : w) {
+            if (!cur-&gt;children[c - 'a']) break;
+            cur = cur-&gt;children[c - 'a'];
+            prefix += c;
+            if (cur-&gt;isEnd) { found = true; break; }
+        }
+        if (!res.empty()) res += ' ';
+        res += found ? prefix : w;
+    }
+    return res;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Longest Word Built from Other Words (sorted-prefix version, same idea as trie + DFS)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string longestWord(vector&lt;string&gt;&amp; words) {
+    sort(words.begin(), words.end());
+    unordered_set&lt;string&gt; built = {""};
+    string best;
+    for (auto&amp; w : words)
+        if (built.count(w.substr(0, w.size() - 1))) {
+            built.insert(w);
+            if (w.size() &gt; best.size()) best = w;
+        }
+    return best;
+}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -4205,6 +7291,65 @@ vector&lt;int&gt; rabinKarp(const string&amp; text, const string&amp; pattern) {
 }</code></pre>
                         </div>
                     </div>
+                    <div class="example">
+                        <h4>Rotation Check (uses KMP findPattern from above)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isRotation(const string&amp; a, const string&amp; b) {
+    if (a.size() != b.size()) return false;
+    return !findPattern(a + a, b).empty();
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Manacher's Algorithm, longest palindromic substring in O(n)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string manacher(const string&amp; s) {
+    string t = "#";
+    for (char c : s) { t += c; t += '#'; }
+    int n = t.size(), center = 0, right = 0, bestLen = 0, bestCenter = 0;
+    vector&lt;int&gt; p(n, 0);
+    for (int i = 0; i &lt; n; i++) {
+        if (i &lt; right) p[i] = min(right - i, p[2 * center - i]);
+        while (i - p[i] - 1 &gt;= 0 &amp;&amp; i + p[i] + 1 &lt; n &amp;&amp; t[i - p[i] - 1] == t[i + p[i] + 1]) p[i]++;
+        if (i + p[i] &gt; right) { center = i; right = i + p[i]; }
+        if (p[i] &gt; bestLen) { bestLen = p[i]; bestCenter = i; }
+    }
+    return s.substr((bestCenter - bestLen) / 2, bestLen);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Double Hashing, O(1) substring compare</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct StringHash {
+    static const long long M1 = 1000000007, M2 = 998244353, B1 = 131, B2 = 137;
+    vector&lt;long long&gt; h1, h2, p1, p2;
+    StringHash(const string&amp; s) : h1(s.size() + 1), h2(s.size() + 1), p1(s.size() + 1), p2(s.size() + 1) {
+        p1[0] = p2[0] = 1;
+        for (int i = 0; i &lt; (int)s.size(); i++) {
+            h1[i + 1] = (h1[i] * B1 + s[i]) % M1;
+            h2[i + 1] = (h2[i] * B2 + s[i]) % M2;
+            p1[i + 1] = p1[i] * B1 % M1;
+            p2[i + 1] = p2[i] * B2 % M2;
+        }
+    }
+    pair&lt;long long,long long&gt; get(int l, int r) {          // hash of s[l..r)
+        long long a = (h1[r] - h1[l] * p1[r - l] % M1 + M1) % M1;
+        long long b = (h2[r] - h2[l] * p2[r - l] % M2 + M2) % M2;
+        return {a, b};
+    }
+};</code></pre>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -4334,6 +7479,123 @@ public:
         return query(r) - query(l - 1);
     }
 };</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Segment Tree with Lazy Propagation (range add, range sum)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">class LazySegTree {
+    vector&lt;long long&gt; tree, lazy; int n;
+    void applyAdd(int node, int l, int r, long long v) { tree[node] += v * (r - l + 1); lazy[node] += v; }
+    void push(int node, int l, int r) {
+        if (!lazy[node]) return;
+        int mid = (l + r) / 2;
+        applyAdd(2 * node, l, mid, lazy[node]);
+        applyAdd(2 * node + 1, mid + 1, r, lazy[node]);
+        lazy[node] = 0;
+    }
+    void build(vector&lt;int&gt;&amp; a, int node, int l, int r) {
+        if (l == r) { tree[node] = a[l]; return; }
+        int mid = (l + r) / 2;
+        build(a, 2 * node, l, mid); build(a, 2 * node + 1, mid + 1, r);
+        tree[node] = tree[2 * node] + tree[2 * node + 1];
+    }
+    void update(int node, int l, int r, int ql, int qr, long long v) {
+        if (qr &lt; l || r &lt; ql) return;
+        if (ql &lt;= l &amp;&amp; r &lt;= qr) { applyAdd(node, l, r, v); return; }
+        push(node, l, r);
+        int mid = (l + r) / 2;
+        update(2 * node, l, mid, ql, qr, v); update(2 * node + 1, mid + 1, r, ql, qr, v);
+        tree[node] = tree[2 * node] + tree[2 * node + 1];
+    }
+    long long query(int node, int l, int r, int ql, int qr) {
+        if (qr &lt; l || r &lt; ql) return 0;
+        if (ql &lt;= l &amp;&amp; r &lt;= qr) return tree[node];
+        push(node, l, r);
+        int mid = (l + r) / 2;
+        return query(2 * node, l, mid, ql, qr) + query(2 * node + 1, mid + 1, r, ql, qr);
+    }
+public:
+    LazySegTree(vector&lt;int&gt;&amp; a) : tree(4 * a.size()), lazy(4 * a.size(), 0), n(a.size()) { build(a, 1, 0, n - 1); }
+    void rangeAdd(int l, int r, long long v) { update(1, 0, n - 1, l, r, v); }
+    long long rangeSum(int l, int r) { return query(1, 0, n - 1, l, r); }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Range GCD Segment Tree (iterative; for min/max swap __gcd with min/max, identity 0 →
+                            INT_MAX/INT_MIN)
+                        </h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">class GcdSegTree {
+    int n; vector&lt;int&gt; t;
+public:
+    GcdSegTree(vector&lt;int&gt;&amp; a) : n(a.size()), t(2 * a.size()) {
+        for (int i = 0; i &lt; n; i++) t[n + i] = a[i];
+        for (int i = n - 1; i &gt; 0; i--) t[i] = __gcd(t[2 * i], t[2 * i + 1]);
+    }
+    void update(int i, int val) {
+        for (t[i += n] = val; i &gt; 1; i &gt;&gt;= 1) t[i &gt;&gt; 1] = __gcd(t[i], t[i ^ 1]);
+    }
+    int query(int l, int r) {                          // inclusive [l, r]
+        int res = 0;
+        for (l += n, r += n + 1; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) {
+            if (l &amp; 1) res = __gcd(res, t[l++]);
+            if (r &amp; 1) res = __gcd(res, t[--r]);
+        }
+        return res;
+    }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Fenwick with Kth Element (order statistics by binary descent)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct FenwickKth {
+    int n; vector&lt;int&gt; t;
+    FenwickKth(int n) : n(n), t(n + 1, 0) {}
+    void add(int i, int delta) { for (; i &lt;= n; i += i &amp; -i) t[i] += delta; }
+    int prefix(int i) { int s = 0; for (; i &gt; 0; i -= i &amp; -i) s += t[i]; return s; }
+    int kth(int k) {                                   // smallest i with prefix(i) &gt;= k, 1-indexed
+        int pos = 0, pw = 1;
+        while (pw * 2 &lt;= n) pw *= 2;
+        for (; pw; pw &gt;&gt;= 1)
+            if (pos + pw &lt;= n &amp;&amp; t[pos + pw] &lt; k) { pos += pw; k -= t[pos]; }
+        return pos + 1;
+    }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Count of Smaller Numbers After Self (Fenwick + coordinate compression)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; countSmaller(vector&lt;int&gt;&amp; nums) {
+    vector&lt;int&gt; sorted = nums;
+    sort(sorted.begin(), sorted.end());
+    sorted.erase(unique(sorted.begin(), sorted.end()), sorted.end());
+    int m = sorted.size();
+    vector&lt;int&gt; bit(m + 1, 0), res(nums.size());
+    auto add = [&amp;](int i) { for (; i &lt;= m; i += i &amp; -i) bit[i]++; };
+    auto query = [&amp;](int i) { int s = 0; for (; i &gt; 0; i -= i &amp; -i) s += bit[i]; return s; };
+    for (int i = (int)nums.size() - 1; i &gt;= 0; i--) {
+        int rank = lower_bound(sorted.begin(), sorted.end(), nums[i]) - sorted.begin() + 1;
+        res[i] = query(rank - 1);
+        add(rank);
+    }
+    return res;
+}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -4471,6 +7733,129 @@ void precompute() {
 long long C(int n, int r) {
     if (r &lt; 0 || r &gt; n) return 0;
     return fact[n] * inv_fact[r] % MOD * inv_fact[n-r] % MOD;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>GCD / LCM</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long gcdll(long long a, long long b) { return b ? gcdll(b, a % b) : a; }
+long long lcmll(long long a, long long b) { return a / gcdll(a, b) * b; }    // divide first to avoid overflow</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Modular Exponentiation and Modular Inverse</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">long long modPow(long long a, long long b, long long m) {
+    long long r = 1; a %= m;
+    while (b) { if (b &amp; 1) r = r * a % m; a = a * a % m; b &gt;&gt;= 1; }
+    return r;
+}
+long long modInverse(long long a, long long p) { return modPow(a, p - 2, p); }   // p must be prime</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Prime Check, Factorization, Divisors (trial division up to √n)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool isPrime(long long n) {
+    if (n &lt; 2) return false;
+    for (long long i = 2; i * i &lt;= n; i++) if (n % i == 0) return false;
+    return true;
+}
+vector&lt;pair&lt;long long,int&gt;&gt; factorize(long long n) {
+    vector&lt;pair&lt;long long,int&gt;&gt; f;
+    for (long long p = 2; p * p &lt;= n; p++) {
+        if (n % p) continue;
+        int cnt = 0;
+        while (n % p == 0) { n /= p; cnt++; }
+        f.push_back({p, cnt});
+    }
+    if (n &gt; 1) f.push_back({n, 1});
+    return f;
+}
+vector&lt;long long&gt; divisors(long long n) {
+    vector&lt;long long&gt; d;
+    for (long long i = 1; i * i &lt;= n; i++)
+        if (n % i == 0) { d.push_back(i); if (i != n / i) d.push_back(n / i); }
+    sort(d.begin(), d.end());
+    return d;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Smallest Prime Factor Sieve (fast factorization for many queries)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; buildSPF(int n) {
+    vector&lt;int&gt; spf(n + 1);
+    iota(spf.begin(), spf.end(), 0);
+    for (int i = 2; i * i &lt;= n; i++)
+        if (spf[i] == i)
+            for (int j = i * i; j &lt;= n; j += i) if (spf[j] == j) spf[j] = i;
+    return spf;
+}
+// factorize x: while (x &gt; 1) { cout &lt;&lt; spf[x]; x /= spf[x]; }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Miller–Rabin (deterministic for 64-bit)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">typedef unsigned long long ull;
+ull mulmod(ull a, ull b, ull m) { return (__uint128_t)a * b % m; }
+ull powmod(ull a, ull b, ull m) {
+    ull r = 1; a %= m;
+    while (b) { if (b &amp; 1) r = mulmod(r, a, m); a = mulmod(a, a, m); b &gt;&gt;= 1; }
+    return r;
+}
+bool millerRabin(ull n) {
+    if (n &lt; 2) return false;
+    static const ull bases[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
+    for (ull p : bases) if (n % p == 0) return n == p;
+    ull d = n - 1; int r = 0;
+    while ((d &amp; 1) == 0) { d &gt;&gt;= 1; r++; }
+    for (ull a : bases) {
+        ull x = powmod(a, d, n);
+        if (x == 1 || x == n - 1) continue;
+        bool composite = true;
+        for (int i = 1; i &lt; r; i++) {
+            x = mulmod(x, x, n);
+            if (x == n - 1) { composite = false; break; }
+        }
+        if (composite) return false;
+    }
+    return true;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Chinese Remainder Theorem (two congruences, uses extgcd from above)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">pair&lt;long long,long long&gt; crt(long long a1, long long m1, long long a2, long long m2) {
+    long long x, y;
+    long long g = extgcd(m1, m2, x, y);
+    if ((a2 - a1) % g != 0) return {-1, -1};                  // no solution
+    long long lcm = m1 / g * m2;
+    long long t = ((a2 - a1) / g % (m2 / g)) * x % (m2 / g);
+    long long res = (a1 + m1 * t) % lcm;
+    if (res &lt; 0) res += lcm;
+    return {res, lcm};                                          // x ≡ res (mod lcm)
 }</code></pre>
                         </div>
                     </div>
@@ -4613,6 +7998,95 @@ int solveTSP(vector&lt;vector&lt;int&gt;&gt;&amp; distance) {
     n = dist.size();
     memset(dp, -1, sizeof(dp));
     return tsp(1, 0);
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Bitmask DP, Assignment Problem (N ≤ 20)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">int assignmentDP(vector&lt;vector&lt;int&gt;&gt;&amp; cost) {
+    int n = cost.size();
+    vector&lt;int&gt; dp(1 &lt;&lt; n, INT_MAX);
+    dp[0] = 0;
+    for (int mask = 0; mask &lt; (1 &lt;&lt; n); mask++) {
+        if (dp[mask] == INT_MAX) continue;
+        int worker = __builtin_popcount(mask);               // next worker to assign
+        if (worker &gt;= n) continue;
+        for (int job = 0; job &lt; n; job++) {
+            if (mask &amp; (1 &lt;&lt; job)) continue;
+            int nm = mask | (1 &lt;&lt; job);
+            dp[nm] = min(dp[nm], dp[mask] + cost[worker][job]);
+        }
+    }
+    return dp[(1 &lt;&lt; n) - 1];
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Game Theory, Stone Game (interval minimax)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">bool stoneGame(vector&lt;int&gt;&amp; piles) {
+    int n = piles.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(n, 0));        // dp[i][j] = (my score - opponent score) on piles[i..j]
+    for (int i = 0; i &lt; n; i++) dp[i][i] = piles[i];
+    for (int len = 2; len &lt;= n; len++)
+        for (int i = 0; i + len - 1 &lt; n; i++) {
+            int j = i + len - 1;
+            dp[i][j] = max(piles[i] - dp[i + 1][j], piles[j] - dp[i][j - 1]);
+        }
+    return dp[0][n - 1] &gt; 0;
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Tree DP, House Robber III (max independent set)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">pair&lt;int,int&gt; robDfs(TreeNode* n) {                      // {rob this node, skip this node}
+    if (!n) return {0, 0};
+    auto [lRob, lSkip] = robDfs(n-&gt;left);
+    auto [rRob, rSkip] = robDfs(n-&gt;right);
+    return {n-&gt;val + lSkip + rSkip, max(lRob, lSkip) + max(rRob, rSkip)};
+}
+int robTree(TreeNode* root) { auto [a, b] = robDfs(root); return max(a, b); }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Digit DP with leading_zero flag (count numbers in [1, N] with no two adjacent equal digits)
+                        </h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">string numD;
+long long memoD[20][11][2][2];                  // pos, prev digit (10 = none), tight, started
+
+long long digitSolve(int pos, int prev, bool tight, bool started) {
+    if (pos == (int)numD.size()) return started ? 1 : 0;
+    long long&amp; res = memoD[pos][prev][tight][started];
+    if (res != -1) return res;
+    res = 0;
+    int limit = tight ? numD[pos] - '0' : 9;
+    for (int d = 0; d &lt;= limit; d++) {
+        bool nt = tight &amp;&amp; (d == limit);
+        if (!started &amp;&amp; d == 0) res += digitSolve(pos + 1, 10, nt, false);   // still in leading zeros
+        else if (started &amp;&amp; d == prev) continue;                               // adjacent equal digits not allowed
+        else res += digitSolve(pos + 1, d, nt, true);
+    }
+    return res;
+}
+long long countNoAdjacentEqual(long long N) {
+    numD = to_string(N);
+    memset(memoD, -1, sizeof(memoD));
+    return digitSolve(0, 10, true, false);
 }</code></pre>
                         </div>
                     </div>
@@ -4777,6 +8251,41 @@ long long kruskal(int n, vector&lt;Edge&gt;&amp; edges) {
         weight[ry] = wx - wy + w;
         return true;
     }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Cycle Detection / Redundant Connection (uses the DSU with bool unite from Kruskal)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; findRedundantConnection(vector&lt;vector&lt;int&gt;&gt;&amp; edges) {
+    DSU dsu(edges.size() + 1);
+    for (auto&amp; e : edges)
+        if (!dsu.unite(e[0], e[1])) return e;        // already connected =&gt; this edge closes a cycle
+    return {};
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>DSU with Component Size and Component Count</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct DSUSize {
+    vector&lt;int&gt; parent, sz; int components;
+    DSUSize(int n) : parent(n), sz(n, 1), components(n) { iota(parent.begin(), parent.end(), 0); }
+    int find(int x) { return parent[x] == x ? x : parent[x] = find(parent[x]); }
+    bool unite(int a, int b) {
+        a = find(a); b = find(b);
+        if (a == b) return false;
+        if (sz[a] &lt; sz[b]) swap(a, b);
+        parent[b] = a; sz[a] += sz[b]; components--;
+        return true;
+    }
+    int size(int x) { return sz[find(x)]; }
 };</code></pre>
                         </div>
                     </div>
@@ -4948,6 +8457,123 @@ long long sumOfDistances(int nodes) {
     dfs2(0, -1);
     return ans[0];
 }</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Euler Tour + Fenwick, subtree sum with point updates</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">const int N = 100005;
+vector&lt;int&gt; adj[N];
+int tin[N], tout[N], timerE = 0, val[N];
+long long bit[N];
+
+void eulerDfs(int u, int p) {
+    tin[u] = ++timerE;
+    for (int v : adj[u]) if (v != p) eulerDfs(v, u);
+    tout[u] = timerE;                                  // subtree(u) = positions [tin[u], tout[u]]
+}
+void bitAdd(int i, long long d) { for (; i &lt; N; i += i &amp; -i) bit[i] += d; }
+long long bitSum(int i) { long long s = 0; for (; i &gt; 0; i -= i &amp; -i) s += bit[i]; return s; }
+
+void setValue(int u, int newVal) { bitAdd(tin[u], newVal - val[u]); val[u] = newVal; }
+long long subtreeSum(int u) { return bitSum(tout[u]) - bitSum(tin[u] - 1); }
+// init: eulerDfs(root, 0); for every u: bitAdd(tin[u], val[u]);</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Tree Centroid</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">vector&lt;int&gt; adj[100005];
+int sz[100005];
+void calcSize(int u, int p) {
+    sz[u] = 1;
+    for (int v : adj[u]) if (v != p) { calcSize(v, u); sz[u] += sz[v]; }
+}
+int findCentroid(int u, int p, int n) {
+    for (int v : adj[u]) if (v != p &amp;&amp; sz[v] &gt; n / 2) return findCentroid(v, u, n);
+    return u;
+}
+// calcSize(0, -1); int c = findCentroid(0, -1, n);</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Sparse Table (O(1) range-min; Euler tour + this = O(1) LCA)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">struct SparseTable {
+    vector&lt;vector&lt;int&gt;&gt; t; vector&lt;int&gt; lg;
+    SparseTable(vector&lt;int&gt;&amp; a) {
+        int n = a.size();
+        lg.assign(n + 1, 0);
+        for (int i = 2; i &lt;= n; i++) lg[i] = lg[i / 2] + 1;
+        t.assign(lg[n] + 1, vector&lt;int&gt;(n));
+        t[0] = a;
+        for (int k = 1; k &lt;= lg[n]; k++)
+            for (int i = 0; i + (1 &lt;&lt; k) &lt;= n; i++)
+                t[k][i] = min(t[k - 1][i], t[k - 1][i + (1 &lt;&lt; (k - 1))]);
+    }
+    int query(int l, int r) {                         // min on [l, r]
+        int k = lg[r - l + 1];
+        return min(t[k][l], t[k][r - (1 &lt;&lt; k) + 1]);
+    }
+};</code></pre>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <h4>Heavy-Light Decomposition, path sum with point updates (Fenwick on chains)</h4>
+
+                        <div class="code-wrap">
+
+                            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">copy</button>
+                            <pre><code class="language-cpp">const int NH = 100005;
+vector&lt;int&gt; adjH[NH];
+int parH[NH], depH[NH], heavy[NH], head[NH], posH[NH], szH[NH], curPos = 0;
+long long bitH[NH];
+
+void bitUpd(int i, long long d) { for (; i &lt; NH; i += i &amp; -i) bitH[i] += d; }
+long long bitQry(int i) { long long s = 0; for (; i &gt; 0; i -= i &amp; -i) s += bitH[i]; return s; }
+
+int dfsSize(int u, int p) {
+    parH[u] = p; szH[u] = 1; heavy[u] = -1;
+    int maxSub = 0;
+    for (int v : adjH[u]) {
+        if (v == p) continue;
+        depH[v] = depH[u] + 1;
+        int s = dfsSize(v, u);
+        szH[u] += s;
+        if (s &gt; maxSub) { maxSub = s; heavy[u] = v; }
+    }
+    return szH[u];
+}
+void decompose(int u, int h) {
+    head[u] = h;
+    posH[u] = ++curPos;
+    if (heavy[u] != -1) decompose(heavy[u], h);                     // heavy child continues the chain
+    for (int v : adjH[u])
+        if (v != parH[u] &amp;&amp; v != heavy[u]) decompose(v, v);         // light child starts a new chain
+}
+void pointUpdate(int u, long long delta) { bitUpd(posH[u], delta); }
+long long pathSum(int a, int b) {
+    long long res = 0;
+    while (head[a] != head[b]) {
+        if (depH[head[a]] &lt; depH[head[b]]) swap(a, b);
+        res += bitQry(posH[a]) - bitQry(posH[head[a]] - 1);
+        a = parH[head[a]];
+    }
+    if (depH[a] &gt; depH[b]) swap(a, b);
+    res += bitQry(posH[b]) - bitQry(posH[a] - 1);
+    return res;
+}
+// setup: depH[0] = 0; dfsSize(0, -1); decompose(0, 0); then pointUpdate(u, value[u]) for every u.
+// For path max/min, replace the Fenwick with a segment tree.</code></pre>
                         </div>
                     </div>
                 </div>
